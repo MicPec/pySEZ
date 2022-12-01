@@ -1,0 +1,23 @@
+{% comment %} load into modal form {% endcomment %}
+<div class="modal-header ">
+    <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+</div>
+<form method="POST" id="confirm" role="dialog" action="{{ action }}">
+    {% csrf_token %}
+    <div class="modal-body">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button"
+        class="btn btn-secondary btn-sm"
+        data-bs-dismiss="modal">Anuluj</button>
+        <button type="submit" class="btn btn-primary btn-sm text-light">Zapisz</button>
+    </div>
+</form>

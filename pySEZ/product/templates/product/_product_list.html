@@ -1,0 +1,40 @@
+<div id="partial">
+    <table class="table table-hover table-dynamic">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Nazwa</th>
+                <th scope="col">Jednostka</th>
+                <th scope="col">Cena jednostkowa</th>
+                <th scope="col" class="text-end">Akcje</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in product_list %}
+                <tr>
+                    <td data-label="Nazwa">
+                        <a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a>
+                    </td>
+                    <td data-label="Jednostka">{{ product.unit.name }}</td>
+                    <td data-label="Cena jednostkowa">{{ product.unit_price }}</td>
+                    <td data-label="Akcje" class="text-end">
+                        {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'product_update' product.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a> {% endcomment %}
+                        <a class="btn btn-primary btn-sm"
+                           href="{% url 'product_update' product.pk %}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#modal"
+                           hx-get="{% url 'product_update' product.pk %}"
+                           hx-target=".modal-content"
+                           hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a>
+                        <a class="confirm btn btn-danger btn-sm"
+                           data-bs-toggle="modal"
+                           data-bs-target="#modal"
+                           hx-get="{% url 'product_delete' product.pk %}"
+                           hx-target=".modal-content"
+                           hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i>Usuń</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex flex-row-reverse p-0">{% include 'scraps/pagination.html' %}</div>
+</div>

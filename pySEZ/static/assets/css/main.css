@@ -1,0 +1,48 @@
+table.table-dynamic thead {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+@media screen and (max-width: 767px) {
+    table.table-dynamic {
+        border: 5;
+    }
+
+    table.table-dynamic caption {
+        font-size: 1.1em;
+    }
+
+    table.table-dynamic thead {
+        display: none;
+    }
+
+    table.table-dynamic tr {
+        border-bottom: 3px solid #ccc;
+        display: block;
+        margin-bottom: .625em;
+    }
+
+    table.table-dynamic td {
+        border-bottom: 1px solid #eee;
+        display: block;
+        font-size: 1.1em;
+        font-weight: normal;
+        text-align: right;
+    }
+
+    table.table-dynamic td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        font-size: .8em;
+        text-transform: uppercase;
+    }
+
+    table.table-dynamic td:last-child {
+        border-bottom: 0;
+    }
+
+    table.table-dynamic .ellipsis {
+        max-width: none;
+    }
+}

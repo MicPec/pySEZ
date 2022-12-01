@@ -1,0 +1,23 @@
+{% comment %} load into modal form {% endcomment %}
+{% load crispy_forms_tags %}
+<div class="modal-header bg-success text-light">
+    <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"></button>
+</div>
+<form method="POST" id="confirm" role="dialog" action="{{ action }}">
+    {% csrf_token %}
+    <div class="modal-body">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+        </div>
+        <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-secondary btn-sm"
+                    data-bs-dismiss="modal">Anuluj</button>
+            <button type="submit" class="btn btn-primary btn-sm text-light">Zapisz</button>
+        </div>
+    </form>

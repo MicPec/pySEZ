@@ -1,0 +1,62 @@
+<div id="partial">
+    <table class="table table-hover table-dynamic">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Client</th>
+                <th scope="col">Dates</th>
+                <th scope="col">Price</th>
+                <th scope="col">Note</th>
+                <th scope="col">Products</th>
+                <th scope="col">Flags</th>
+                <th scope="col">Status</th>
+                <th scope="col" class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in order_list %}
+                <tr>
+                    <td data-label="ID">
+                        <a href="{% url 'order_detail' order.pk %}">{{ order.id }}</a>
+                    </td>
+                    <td data-label="Client">{{ order.client|default:'&nbsp;' }}</td>
+                    <td data-label="Dates">
+                        <ul>
+                            <li>Created : {{ order.date_created }}</li>
+                            <li>Deadline : {{ order.date_finished }}</li>
+                            <li>Finished : {{ order.deadline }}</li>
+                        </ul>
+                    </td>
+                    <td data-label="Price">{{ order.discount }} - {{ order.total_amount}}</td>
+                    <td data-label="Note">{{ order.note }}</td>
+                    <td data-label="Products">
+                        {% for product in order.products.all  %}
+                            <ul>
+                                <li>{{ product }} - {{ product.unit_price }}{{ product.unit }}</li>
+                            </ul>
+                        {% endfor %}
+                    </td>
+                    <td data-label="Flags">{{ order.flags }}</td>
+                    <td data-label="Status">{{ order.status }}</td>
+                    <td data-label="Actions" class="text-end">
+                        {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'order_update' order.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a> {% endcomment %}
+                        <a class="btn btn-primary btn-sm"
+                           href="{% url 'order_update' order.pk %}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#modal"
+                           hx-get="{% url 'order_update' order.pk %}"
+                           hx-target=".modal-content"
+                           hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a>
+                        <a class="confirm btn btn-danger btn-sm"
+                           data-bs-toggle="modal"
+                           data-bs-target="#modal"
+                           hx-get="{% url 'order_delete' order.pk %}"
+                           hx-target=".modal-content"
+                           hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i>Usuń</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="d-flex flex-row-reverse p-0">{% include 'scraps/pagination.html' %}</div>
+</div>
