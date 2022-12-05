@@ -17,7 +17,7 @@
                                    placeholder="Szukaj"
                                    value="{{ request.GET.search }}"
                                    hx-swap="outerHTML"
-                                   hx-get="{% url 'client_index' %}"
+                                   hx-get="{% url 'client-list' %}"
                                    hx-preserve="false"
                                    {% comment %} hx-push-url="true" {% endcomment %}
                                    hx-refresh="true"
@@ -26,11 +26,11 @@
                                    hx-indicator=".htmx-indicator"/>
                             {% comment %} <button class="btn btn-outline-success" type="submit">Search</button> {% endcomment %}
                             <a class="btn btn-sm btn-light text-dark"
-                               href="{% url 'client_create' %}"
+                               href="{% url 'client-create' %}"
                                data-bs-toggle="modal"
                                data-bs-target="#modal"
                                hx-refresh="true"
-                               hx-get="{% url 'client_create' %}"
+                               hx-get="{% url 'client-create' %}"
                                hx-target=".modal-content"
                                hx-trigger="click"><i class="fa fa-user-plus" aria-hidden="true"></i>Nowy</a>
                         </form>

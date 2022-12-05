@@ -14,7 +14,7 @@
             {% for client in client_list %}
                 <tr>
                     <td data-label="Nazwa">
-                        <a href="{% url 'client_detail' client.pk %}">{{ client.fullname }}</a>
+                        <a href="{% url 'client-detail' client.pk %}">{{ client.fullname }}</a>
                     </td>
                     <td data-label="Firma">{{ client.company|default:'&nbsp;' }}</td>
                     <td data-label="E-mail">
@@ -25,16 +25,16 @@
                     <td data-label="Akcje" class="text-end">
                         {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'client_update' client.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a> {% endcomment %}
                         <a class="btn btn-primary btn-sm"
-                           href="{% url 'client_update' client.pk %}"
+                           href="{% url 'client-update' client.pk %}"
                            data-bs-toggle="modal"
                            data-bs-target="#modal"
-                           hx-get="{% url 'client_update' client.pk %}"
+                           hx-get="{% url 'client-update' client.pk %}"
                            hx-target=".modal-content"
                            hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a>
                         <a class="confirm btn btn-danger btn-sm"
                            data-bs-toggle="modal"
                            data-bs-target="#modal"
-                           hx-get="{% url 'client_delete' client.pk %}"
+                           hx-get="{% url 'client-delete' client.pk %}"
                            hx-target=".modal-content"
                            hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i>Usuń</a>
                     </td>

@@ -20,11 +20,11 @@
         </div>
         <div class="card-footer">
             <div class="text-end">
-                <a href="{% url 'client_update' client.pk %}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true">Edytuj</i></a>
+                <a href="{% url 'client-update' client.pk %}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true">Edytuj</i></a>
                 <a class="confirm btn btn-danger btn-sm"
                                        data-bs-toggle="modal"
                                        data-bs-target="#modal"
-                                       hx-get="{% url 'client_delete' client.pk %}"
+                                       hx-get="{% url 'client-delete' client.pk %}"
                                        hx-target=".modal-content"
                                        hx-trigger="click"><i class="fa fa-trash" aria-hidden="true">Usuń</i></a>
             </div>

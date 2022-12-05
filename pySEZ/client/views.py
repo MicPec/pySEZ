@@ -44,7 +44,7 @@ class ClientCreateView(CreateView):
         if self.request.htmx:
             return self.request.META.get("HTTP_REFERER")
         else:
-            return reverse_lazy("client_detail", kwargs={"pk": self.object.pk})
+            return reverse_lazy("client-detail", kwargs={"pk": self.object.pk})
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
@@ -52,7 +52,7 @@ class ClientCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Nowy Klient"
-        context["action"] = reverse('client_create')
+        context["action"] = reverse('client-create')
         return context
 
 
@@ -63,7 +63,7 @@ class ClientUpdateView(UpdateView):
 
     def get_success_url(self):
         # return self.request.META.get("HTTP_REFERER")
-        return reverse_lazy("client_index")
+        return reverse_lazy("client-list")
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
@@ -71,7 +71,7 @@ class ClientUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Edycja Klienta"
-        context["action"] = reverse('client_update', args=[self.object.pk])
+        context["action"] = reverse('client-update', args=[self.object.pk])
         return context
 
 
@@ -83,8 +83,9 @@ class ClientDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context["question"] = "Czy usunąć klienta?"
         context["subject"] = self.object
-        context["action"] = reverse('client_delete', args=[self.object.pk])
+        context["action"] = reverse('client-delete', args=[self.object.pk])
         return context
 
     def get_template_names(self):
         return ["scraps/_confirm_delete.html"] if self.request.htmx else ["confirm_delete.html"]
+

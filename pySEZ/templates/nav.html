@@ -38,65 +38,35 @@
                     <span class="title">Dashboard</span>
                 </a>
             </li>
+            {% comment %} Orders {% endcomment %}
+            <li class="nav-item ">
+                <a class="sidebar-link" href="{% url 'order-list' %}">
+                    <span class="icon-holder">
+                        <i class="c-green-500 ti-pencil-alt"></i>
+                    </span>
+                    <span class="title">Orders</span>
+                </a>
+            </li>
 
-            <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="javascript:void(0);">
+
+            {% comment %} Clients {% endcomment %}
+            <li class="nav-item ">
+                <a class="sidebar-link" href="{% url 'client-list' %}">
                     <span class="icon-holder">
-                        <i class="c-orange-500 ti-layout-list-thumb"></i>
+                        <i class="c-orange-500 ti-user"></i>
                     </span>
-                    <span class="title">Zlecenia</span>
-                    <span class="arrow">
-                        <i class="ti-angle-right"></i>
-                    </span>
+                    <span class="title">Clients</span>
                 </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="sidebar-link" href="basic-table.html">Lista</a>
-                    </li>
-                    <li>
-                        <a class="sidebar-link" href="datatable.html">Dodaj</a>
-                    </li>
-                </ul>
             </li>
-            {% comment %} Klienci {% endcomment %}
-            <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="javascript:void(0);">
+
+            {% comment %} Products {% endcomment %}
+            <li class="nav-item ">
+                <a class="sidebar-link" href="{% url 'product-list' %}">
                     <span class="icon-holder">
-                        <i class="c-purple-500 ti-map"></i>
+                        <i class="c-purple-500 ti-package"></i>
                     </span>
-                    <span class="title">Klienci</span>
-                    <span class="arrow">
-                        <i class="ti-angle-right"></i>
-                    </span>
+                    <span class="title">Products</span>
                 </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="{% url 'client_index' %}">Lista</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'client_create' %}">Dodaj</a>
-                    </li>
-                </ul>
-            </li>
-            {% comment %} Produkty {% endcomment %}
-            <li class="nav-item dropdown">
-                <a class="dropdown-toggle" href="javascript:void(0);">
-                    <span class="icon-holder">
-                        <i class="c-purple-500 ti-map"></i>
-                    </span>
-                    <span class="title">Produkty</span>
-                    <span class="arrow">
-                        <i class="ti-angle-right"></i>
-                    </span>
-                </a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a href="{% url 'product_index' %}">Lista</a>
-                    </li>
-                    <li>
-                        <a href="{% url 'product_create' %}">Dodaj</a>
-                    </li>
-                </ul>
             </li>
             {% comment %}  {% endcomment %}
             <li class="nav-item dropdown">

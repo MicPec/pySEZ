@@ -39,7 +39,7 @@ class ProductCreateView(CreateView):
         if self.request.htmx:
             return self.request.META.get("HTTP_REFERER")
         else:
-            return reverse_lazy("product_detail", kwargs={"pk": self.object.pk})
+            return reverse_lazy("product-detail", kwargs={"pk": self.object.pk})
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
@@ -58,7 +58,7 @@ class ProductUpdateView(UpdateView):
 
     def get_success_url(self):
         # return self.request.META.get("HTTP_REFERER")
-        return reverse_lazy("product_index")
+        return reverse_lazy("product-list")
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
@@ -66,7 +66,7 @@ class ProductUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Edycja Produktu"
-        context["action"] = reverse('product_update', args=[self.object.pk])
+        context["action"] = reverse('product-update', args=[self.object.pk])
         return context
 
 

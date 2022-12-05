@@ -1,3 +1,4 @@
+{% load ordertags %}
 <div id="partial">
     <table class="table table-hover table-dynamic">
         <thead class="table-dark">
@@ -17,7 +18,7 @@
             {% for order in order_list %}
                 <tr>
                     <td data-label="ID">
-                        <a href="{% url 'order_detail' order.pk %}">{{ order.id }}</a>
+                        <a href="{% url 'order-detail' order.pk %}">{{ order.id }}</a>
                     </td>
                     <td data-label="Client">{{ order.client|default:'&nbsp;' }}</td>
                     <td data-label="Dates">
@@ -27,12 +28,12 @@
                             <li>Finished : {{ order.deadline }}</li>
                         </ul>
                     </td>
-                    <td data-label="Price">{{ order.discount }} - {{ order.total_amount}}</td>
+                    <td data-label="Price">{{ order.dsc_price|default:order.total_amount }}</td>
                     <td data-label="Note">{{ order.note }}</td>
                     <td data-label="Products">
                         {% for product in order.products.all  %}
                             <ul>
-                                <li>{{ product }} - {{ product.unit_price }}{{ product.unit }}</li>
+                                <li>{{ product.name }} - {% product_qty order product  %}{{ product.unit.name }}</li>
                             </ul>
                         {% endfor %}
                     </td>
@@ -41,16 +42,16 @@
                     <td data-label="Actions" class="text-end">
                         {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'order_update' order.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a> {% endcomment %}
                         <a class="btn btn-primary btn-sm"
-                           href="{% url 'order_update' order.pk %}"
+                           href="{% url 'order-update' order.pk %}"
                            data-bs-toggle="modal"
                            data-bs-target="#modal"
-                           hx-get="{% url 'order_update' order.pk %}"
+                           hx-get="{% url 'order-update' order.pk %}"
                            hx-target=".modal-content"
                            hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a>
                         <a class="confirm btn btn-danger btn-sm"
                            data-bs-toggle="modal"
                            data-bs-target="#modal"
-                           hx-get="{% url 'order_delete' order.pk %}"
+                           hx-get="{% url 'order-delete' order.pk %}"
                            hx-target=".modal-content"
                            hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i>Usuń</a>
                     </td>

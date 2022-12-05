@@ -44,7 +44,7 @@ class OrderCreateView(CreateView):
         if self.request.htmx:
             return self.request.META.get("HTTP_REFERER")
         else:
-            return reverse_lazy("order_detail", kwargs={"pk": self.object.pk})
+            return reverse_lazy("order-detail", kwargs={"pk": self.object.pk})
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
@@ -52,7 +52,7 @@ class OrderCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Nowy Klient"
-        context["action"] = reverse('order_create')
+        context["action"] = reverse('order-create')
         return context
 
 
@@ -63,7 +63,7 @@ class OrderUpdateView(UpdateView):
 
     def get_success_url(self):
         # return self.request.META.get("HTTP_REFERER")
-        return reverse_lazy("order_index")
+        return reverse_lazy("order-list")
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
@@ -71,7 +71,7 @@ class OrderUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Edycja Klienta"
-        context["action"] = reverse('order_update', args=[self.object.pk])
+        context["action"] = reverse('order-update', args=[self.object.pk])
         return context
 
 
@@ -83,7 +83,7 @@ class OrderDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context["question"] = "Czy usunąć klienta?"
         context["subject"] = self.object
-        context["action"] = reverse('order_delete', args=[self.object.pk])
+        context["action"] = reverse('order-delete', args=[self.object.pk])
         return context
 
     def get_template_names(self):

@@ -15,7 +15,7 @@ class Client(models.Model):
         return f"{self.fullname} {company}"
 
     def get_absolute_url(self):
-        return redirect("client_detail", pk=self.pk)
+        return redirect("client-detail", pk=self.pk)
 
     @property
     def fullname(self, reverse=True):

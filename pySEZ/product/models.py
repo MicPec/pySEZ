@@ -10,8 +10,8 @@ class Unit(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=50)
-    unit_price = models.DecimalField(default=.0, max_digits=10, decimal_places=2)
+    name = models.CharField(max_length=100)
+    unit_price = models.DecimalField(default=.0, max_digits=20, decimal_places=2)
     unit = models.ForeignKey(Unit, on_delete=models.CASCADE)
 
     def __str__(self):
