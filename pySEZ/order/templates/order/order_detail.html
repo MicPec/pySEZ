@@ -2,35 +2,35 @@
 {% block content %}
     <div class="card">
         <h5 class="card-header bg-primary text-light">
-            <strong>{{ client.fullname }}</strong>
-            {% if client.company != '' %}({{ client.company }}){% endif %}
+            <strong>{{ order.fullname }}</strong>
+            {% if order.company != '' %}({{ order.company }}){% endif %}
         </h5>
         <div class="card-body row">
             <div class="col-4">
-                <i class="fa fa-phone" aria-hidden="true"></i> {{ client.phone }}
+                <i class="fa fa-phone" aria-hidden="true"></i> {{ order.phone }}
             </div>
             <div class="col-4">
-                <a href="mailto:{{ client.email }}"><i class="fa fa-envelope" aria-hidden="true"></i> {{ client.email }}</a>
+                <a href="mailto:{{ order.email }}"><i class="fa fa-envelope" aria-hidden="true"></i> {{ order.email }}</a>
             </div>
             <div class="col-4">
-                {% if client.website != '' %}
-                    <a href="{{ client.website }}" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i> {{ client.website }}</a>
+                {% if order.website != '' %}
+                    <a href="{{ order.website }}" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i> {{ order.website }}</a>
                 {% endif %}
             </div>
         </div>
         <div class="card-footer">
             <div class="text-end">
-                <a href="{% url 'client_update' client.pk %}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true">Edytuj</i></a>
+                <a href="{% url 'order-update' order.pk %}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true">Edytuj</i></a>
                 <a class="confirm btn btn-danger btn-sm"
                                        data-bs-toggle="modal"
                                        data-bs-target="#modal"
-                                       hx-get="{% url 'client_delete' client.pk %}"
+                                       hx-get="{% url 'order-delete' order.pk %}"
                                        hx-target=".modal-content"
                                        hx-trigger="click"><i class="fa fa-trash" aria-hidden="true">Usuń</i></a>
             </div>
         </div>
     </div>
-    {% for order in client.orders.all|dictsortreversed:'date_created' %}
+    {% for order in order.orders.all|dictsortreversed:'date_created' %}
         <p>{{ order }} total:{{ order.total_amount }}</p>
     {% endfor %}
 {% endblock content %}

@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import request
 from django.views.generic import (
     ListView,
     DetailView,
@@ -9,7 +10,8 @@ from django.views.generic import (
 from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 from .models import Order
-from .forms import OrderForm
+from status.models import Status
+from .forms import OrderForm, OrderStatusUpdate
 
 
 class OrderListView(ListView):
@@ -41,9 +43,9 @@ class OrderCreateView(CreateView):
     form_class = OrderForm
 
     def get_success_url(self):
-        if self.request.htmx:
-            return self.request.META.get("HTTP_REFERER")
-        else:
+        # if self.request.htmx:
+        #     return self.request.META.get("HTTP_REFERER")
+        # else:
             return reverse_lazy("order-detail", kwargs={"pk": self.object.pk})
 
     def get_template_names(self):
@@ -54,6 +56,11 @@ class OrderCreateView(CreateView):
         context["title"] = "Nowy Klient"
         context["action"] = reverse('order-create')
         return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.status = Status.objects.filter(state = 'NEW').first()
+        return super(OrderCreateView, self).form_valid(form)
 
 
 class OrderUpdateView(UpdateView):
@@ -70,8 +77,26 @@ class OrderUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Edycja Klienta"
+        context["title"] = "Order Edit"
         context["action"] = reverse('order-update', args=[self.object.pk])
+        return context
+
+
+class OrderStatusUpdateView(OrderUpdateView):
+    form_class = OrderStatusUpdate
+    extra_context = {"title": "Status Change"}
+
+    def get_success_url(self):
+        return self.request.META.get("HTTP_REFERER")
+        # return reverse_lazy("order-list")
+
+    def get_template_names(self):
+        return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Change status"
+        context["action"] = reverse('order-status-update', args=[self.object.pk])
         return context
 
 

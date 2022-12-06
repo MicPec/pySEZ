@@ -28,10 +28,18 @@ class Status(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def css_bg_color(self):
+        return f'background-color: {self.color}; '
+
+    @property
+    def css_text_color(self):
+        return f'color: {opposite_color(self.color)}; '
+
     @admin.display
     def color_code(self):
         return format_html(
-            f'<span style="background-color: {self.color}; color: {opposite_color(self.color)};'
+            f'<span style="{self.css_bg_color}{self.css_text_color}'
             f' display: block; width: 100%; padding: 3px; text-align: center;">{self.color}</span>'
         )
 

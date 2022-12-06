@@ -44,15 +44,8 @@ class Order(models.Model):
     @property
     def total_amount(self):
         return sum(
-            oi.quantity * oi.product.unit_price for oi in self.orderitem_set.all()
+            oi.amount for oi in self.orderitem_set.all()
         )
-
-    # @property
-    # def data(self, product_id):
-    #     return {
-    #         "quantity": self.orderitem_set.get(pk=product_id).quantity,
-    #         "note": self.orderitem_set.get(pk=product_id).note,
-    #     }
 
     @admin.display
     def get_products(self):
@@ -67,6 +60,9 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} - ({self.quantity} {self.product.unit.name})"
+
+    def get_absolute_url(self):
+        return redirect("order-detail", pk=self.pk)
 
     @property
     def amount(self):

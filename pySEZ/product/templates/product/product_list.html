@@ -3,12 +3,12 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <div class="shadow bgc-white bd bdrs-3 p-0 mB-10">
-                <nav class="navbar navbar-dark bg-primary h-50">
+            <div class="shadow bgc-white bd bdrs-3 mb-10">
+                <nav class="navbar navbar-dark bg-primary">
                     <div class="container-fluid">
                         <div class="navbar-brand">Lista produktów</div>
                         <form class="d-flex" role="search">
-                            <span class="htmx-indicator me-2">
+                            <span class="htmx-indicatorr me-2">
                                 <img class="mt-2" style="height:2rem; width:2rem;" src="{% static "assets/images/three-dots.svg" %}">
                             </span>
                             <input class="form-control me-2"
@@ -24,7 +24,6 @@
                                    hx-trigger="keyup changed delay:500ms, search"
                                    hx-target="#partial"
                                    hx-indicator=".htmx-indicator"/>
-                            {% comment %} <button class="btn btn-outline-success" type="submit">Search</button> {% endcomment %}
                             <a class="btn btn-sm btn-light text-dark"
                                href="{% url 'product-create' %}"
                                data-bs-toggle="modal"

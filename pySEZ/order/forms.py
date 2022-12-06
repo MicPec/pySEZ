@@ -15,3 +15,11 @@ class OrderForm(ModelForm):
             "dsc_price",
             "products",
         )
+
+class OrderStatusUpdate(ModelForm):
+
+    class Meta:
+        model = Order
+        fields = (
+            "status",
+        )

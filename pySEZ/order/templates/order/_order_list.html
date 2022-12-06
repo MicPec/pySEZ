@@ -22,25 +22,31 @@
                     </td>
                     <td data-label="Client">{{ order.client|default:'&nbsp;' }}</td>
                     <td data-label="Dates">
-                        <ul>
-                            <li>Created : {{ order.date_created }}</li>
-                            <li>Deadline : {{ order.date_finished }}</li>
-                            <li>Finished : {{ order.deadline }}</li>
+                        <ul class="">
+                            <li class="list-group-item">Created : {{ order.date_created }}</li>
+                            <li class="list-group-item">Deadline : {{ order.date_finished }}</li>
+                            <li class="list-group-item">Finished : {{ order.deadline }}</li>
                         </ul>
                     </td>
                     <td data-label="Price">{{ order.dsc_price|default:order.total_amount }}</td>
-                    <td data-label="Note">{{ order.note }}</td>
+                    <td data-label="Note">{{ order.note|default:"&nbsp;" }}</td>
                     <td data-label="Products">
                         {% for product in order.products.all  %}
                             <ul>
-                                <li>{{ product.name }} - {% product_qty order product  %}{{ product.unit.name }}</li>
+                                <li class="list-group-item">{{ product.name }} - {% product_qty order product  %}{{ product.unit.name }}</li>
                             </ul>
                         {% endfor %}
                     </td>
-                    <td data-label="Flags">{{ order.flags }}</td>
-                    <td data-label="Status">{{ order.status }}</td>
+                    <td data-label="Flags">{{ order.flags|default:"&nbsp;" }}</td>
+
+                    <td data-label="Status"><a class="confirm btn btn-sm" style="{{ order.status.css_bg_color }}{{ order.status.css_text_color }} width:100%;"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modal"
+                        hx-get="{% url 'order-status-update' order.pk %}"
+                        hx-target=".modal-content"
+                        hx-trigger="click">{{ order.status }}</a></td>
                     <td data-label="Actions" class="text-end">
-                        {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'order_update' order.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a> {% endcomment %}
+
                         <a class="btn btn-primary btn-sm"
                            href="{% url 'order-update' order.pk %}"
                            data-bs-toggle="modal"
@@ -48,6 +54,7 @@
                            hx-get="{% url 'order-update' order.pk %}"
                            hx-target=".modal-content"
                            hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a>
+
                         <a class="confirm btn btn-danger btn-sm"
                            data-bs-toggle="modal"
                            data-bs-target="#modal"
