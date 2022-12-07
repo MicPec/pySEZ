@@ -3,38 +3,43 @@
 {% block content %}
     <div class="row">
         <div class="col-md-12">
-            <div class="shadow bgc-white bd bdrs-3 mb-10">
-                <nav class="navbar navbar-dark bg-primary">
-                    <div class="container-fluid">
-                        <div class="navbar-brand">Lista produktów</div>
-                        <form class="d-flex" role="search">
-                            <span class="htmx-indicatorr me-2">
-                                <img class="mt-2" style="height:2rem; width:2rem;" src="{% static "assets/images/three-dots.svg" %}">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-light fw-bold">
+                    <div class="d-flex align-items-center">
+                        <div class="p-2 flex-grow-1 fs-5">Product List</div>
+                        <div class="p-2">
+                            <span class="htmx-indicator me-2">
+                                <img width="30px" src="{% static "assets/images/three-dots.svg" %}"/>
                             </span>
-                            <input class="form-control me-2"
-                                   type="search"
-                                   name="search"
-                                   placeholder="Szukaj"
-                                   value="{{ request.GET.search }}"
-                                   hx-swap="outerHTML"
-                                   hx-get="{% url 'product-list' %}"
-                                   hx-preserve="false"
-                                   {% comment %} hx-push-url="true" {% endcomment %}
-                                   hx-refresh="true"
-                                   hx-trigger="keyup changed delay:500ms, search"
-                                   hx-target="#partial"
-                                   hx-indicator=".htmx-indicator"/>
-                            <a class="btn btn-sm btn-light text-dark"
+                        </div>
+                        <div class="p-2">
+                            <div>
+                                <input class="form-control form-control-sm"
+                                       type="search"
+                                       name="search"
+                                       placeholder="Szukaj"
+                                       value="{{ request.GET.search }}"
+                                       hx-swap="outerHTML"
+                                       hx-get="{% url 'product-list' %}"
+                                       hx-preserve="false"
+                                       hx-refresh="true"
+                                       hx-trigger="keyup changed delay:500ms, search"
+                                       hx-target="#partial"
+                                       hx-indicator=".htmx-indicator"/>
+                            </div>
+                        </div>
+                        <div class="p-2">
+                            <a class="btn btn-sm btn-light text-dark form-button"
                                href="{% url 'product-create' %}"
                                data-bs-toggle="modal"
                                data-bs-target="#modal"
                                hx-refresh="true"
                                hx-get="{% url 'product-create' %}"
                                hx-target=".modal-content"
-                               hx-trigger="click"><i class="fa fa-user-plus" aria-hidden="true"></i>Nowy</a>
-                        </form>
+                               hx-trigger="click"><i class="fa fa-user-plus" aria-hidden="true"></i> New product</a>
+                        </div>
                     </div>
-                </nav>
+                </div>
                 <div id="partial">{% include "./_product_list.html" %}</div>
             </div>
         </div>

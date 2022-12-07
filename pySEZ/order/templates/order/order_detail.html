@@ -1,32 +1,70 @@
 {% extends "../index.html" %}
 {% block content %}
-    <div class="card">
-        <h5 class="card-header bg-primary text-light">
-            <strong>{{ order.fullname }}</strong>
-            {% if order.company != '' %}({{ order.company }}){% endif %}
-        </h5>
-        <div class="card-body row">
-            <div class="col-4">
-                <i class="fa fa-phone" aria-hidden="true"></i> {{ order.phone }}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-light fw-bold fs-5">Client</div>
+                    <ul class="list-group list-group-flush text-end">
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">NAME:</i>{{ order.client.lastname }} {{ order.client.firstname }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">COMPANY:</i>{{ order.client.company }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">PHONE:</i>{{ order.client.phone }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">E-MAIL:</i>{{ order.client.email }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">WEBSITE:</i>{{ order.client.website }}
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="col-4">
-                <a href="mailto:{{ order.email }}"><i class="fa fa-envelope" aria-hidden="true"></i> {{ order.email }}</a>
-            </div>
-            <div class="col-4">
-                {% if order.website != '' %}
-                    <a href="{{ order.website }}" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i> {{ order.website }}</a>
-                {% endif %}
-            </div>
-        </div>
-        <div class="card-footer">
-            <div class="text-end">
-                <a href="{% url 'order-update' order.pk %}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true">Edytuj</i></a>
-                <a class="confirm btn btn-danger btn-sm"
-                                       data-bs-toggle="modal"
-                                       data-bs-target="#modal"
-                                       hx-get="{% url 'order-delete' order.pk %}"
-                                       hx-target=".modal-content"
-                                       hx-trigger="click"><i class="fa fa-trash" aria-hidden="true">Usuń</i></a>
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-light fw-bold fs-5">Order</div>
+                    <ul class="list-group list-group-flush text-end">
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">DATE:</i>
+                            <br>
+                            <ul class="list-group-flush">
+                                <li class="list-group-item">
+                                    <i class="pull-left fw-bold">CREATED: </i>{{ order.date_created }}
+                                </li>
+                                {% if order.deadline %}
+                                    <li class="list-group-item">
+                                        <i class="pull-left fw-bold">DEADLINE: </i>{{ order.deadline }}
+                                    </li>
+                                {% endif %}
+                                {% if order.finished %}
+                                    <li class="list-group-item">
+                                        <i class="pull-left fw-bold">FINISHED: </i>{{ order.finished }}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">PRICE:</i>{{ order.total_amount }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.dsc_price }}%
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">MARKERS:</i>{{ order.markers }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">STATUS:</i>
+                            {% include "./_status_btn.html" %}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">NOTE:</i><textarea disabled class="form-control" style="height: 20vh;">{{ order.note}}</textarea>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

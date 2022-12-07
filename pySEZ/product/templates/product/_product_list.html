@@ -2,10 +2,10 @@
     <table class="table table-hover table-dynamic">
         <thead class="table-dark">
             <tr>
-                <th scope="col">Nazwa</th>
-                <th scope="col">Jednostka</th>
-                <th scope="col">Cena jednostkowa</th>
-                <th scope="col" class="text-end">Akcje</th>
+                <th scope="col">Name</th>
+                <th scope="col">Unit</th>
+                <th scope="col">Unit Price</th>
+                <th scope="col" class="text-end">Action</th>
             </tr>
         </thead>
         <tbody>
@@ -18,19 +18,19 @@
                     <td data-label="Cena jednostkowa">{{ product.unit_price }}</td>
                     <td data-label="Akcje" class="text-end">
                         {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'product_update' product.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a> {% endcomment %}
-                        <a class="btn btn-primary btn-sm"
+                        <a class="btn btn-primary btn-sm" title="Edit"
                            href="{% url 'product-update' product.pk %}"
                            data-bs-toggle="modal"
                            data-bs-target="#modal"
                            hx-get="{% url 'product-update' product.pk %}"
                            hx-target=".modal-content"
-                           hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a>
-                        <a class="confirm btn btn-danger btn-sm"
+                           hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a class="confirm btn btn-danger btn-sm" title="Delete"
                            data-bs-toggle="modal"
                            data-bs-target="#modal"
                            hx-get="{% url 'product-delete' product.pk %}"
                            hx-target=".modal-content"
-                           hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i>Usuń</a>
+                           hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i></a>
                     </td>
                 </tr>
             {% endfor %}
