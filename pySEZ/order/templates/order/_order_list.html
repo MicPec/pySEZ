@@ -6,7 +6,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Client</th>
                 <th scope="col">Date</th>
-                <th scope="col">Price</th>
+                <th scope="col" class="text-end">Price</th>
                 <th scope="col">Note</th>
                 <th scope="col">Products</th>
                 <th scope="col">Flags</th>
@@ -26,7 +26,7 @@
                             {% if order.deadline %}<li class="list-group-item">Finished : {{ order.deadline }}</li>{% endif %}
                         </ul>
                     </td>
-                    <td data-label="Price">{{ order.dsc_price|default:order.total_amount }}</td>
+                    <td data-label="Price" class="text-end">{{ order.dsc_price|default:order.total_amount|floatformat:"2" }}</td>
                     <td data-label="Note">{{ order.note|default:"&nbsp;" }}</td>
                     <td data-label="Products">
                         {% for product in order.products.all  %}

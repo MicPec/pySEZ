@@ -43,9 +43,7 @@ class Order(models.Model):
 
     @property
     def total_amount(self):
-        return sum(
-            oi.amount for oi in self.orderitem_set.all()
-        )
+        return sum(oi.amount for oi in self.orderitem_set.all())
 
     @admin.display
     def get_products(self):

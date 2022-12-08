@@ -1,0 +1,20 @@
+<div class="card shadow">
+    <div class="card-header bg-primary text-light fw-bold fs-5">Client</div>
+    <ul class="list-group list-group-flush text-end">
+        <li class="list-group-item">
+            <i class="pull-left fw-bold">NAME:</i><a href="{% url 'client-detail' client.pk %}">{{ client.lastname }} {{ client.firstname }}</a>
+        </li>
+        <li class="list-group-item">
+            <i class="pull-left fw-bold">COMPANY:</i>{{ client.company }}
+        </li>
+        <li class="list-group-item">
+            <i class="pull-left fw-bold">PHONE:</i>{{ client.phone }}
+        </li>
+        <li class="list-group-item">
+            <i class="pull-left fw-bold">E-MAIL:</i>{{ client.email }}
+        </li>
+        <li class="list-group-item">
+            <i class="pull-left fw-bold">WEBSITE:</i>{{ client.website }}
+        </li>
+    </ul>
+</div>

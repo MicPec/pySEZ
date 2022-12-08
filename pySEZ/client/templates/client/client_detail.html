@@ -1,36 +1,25 @@
 {% extends "../index.html" %}
 {% block content %}
-    <div class="card">
-        <h5 class="card-header bg-primary text-light">
-            <strong>{{ client.fullname }}</strong>
-            {% if client.company != '' %}({{ client.company }}){% endif %}
-        </h5>
-        <div class="card-body row">
-            <div class="col-4">
-                <i class="fa fa-phone" aria-hidden="true"></i> {{ client.phone }}
-            </div>
-            <div class="col-4">
-                <a href="mailto:{{ client.email }}"><i class="fa fa-envelope" aria-hidden="true"></i> {{ client.email }}</a>
-            </div>
-            <div class="col-4">
-                {% if client.website != '' %}
-                    <a href="{{ client.website }}" target="_blank"><i class="fa fa-globe" aria-hidden="true"></i> {{ client.website }}</a>
-                {% endif %}
-            </div>
-        </div>
-        <div class="card-footer">
-            <div class="text-end">
-                <a href="{% url 'client-update' client.pk %}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true">Edytuj</i></a>
-                <a class="confirm btn btn-danger btn-sm"
-                                       data-bs-toggle="modal"
-                                       data-bs-target="#modal"
-                                       hx-get="{% url 'client-delete' client.pk %}"
-                                       hx-target=".modal-content"
-                                       hx-trigger="click"><i class="fa fa-trash" aria-hidden="true">Usuń</i></a>
-            </div>
+    <div class="row">
+        <div class="col-md-6 gy-3">{% include './_client_vcard.html' %}</div>
+        <div class="col-md-6 gy-3">
+            <a href="{% url 'client-update' client.pk %}"
+               class="btn btn-primary btn-sm"
+               data-bs-toggle="modal"
+               data-bs-target="#modal"
+               hx-get="{% url 'client-update' client.pk %}"
+               hx-target=".modal-content"
+               hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"> Edit</i></a>
+            <a class="confirm btn btn-danger btn-sm"
+               data-bs-toggle="modal"
+               data-bs-target="#modal"
+               hx-get="{% url 'client-delete' client.pk %}"
+               hx-target=".modal-content"
+               hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"> Delete</i></a>
         </div>
     </div>
-    {% for order in client.orders.all|dictsortreversed:'date_created' %}
-        <p>{{ order }} total:{{ order.total_amount }}</p>
-    {% endfor %}
+</div>
+{% for order in client.orders.all|dictsortreversed:'date_created' %}
+    <p>{{ order }} total:{{ order.total_amount }}</p>
+{% endfor %}
 {% endblock content %}

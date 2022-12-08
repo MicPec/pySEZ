@@ -11,3 +11,8 @@ def product_qty(order, product):
 @register.simple_tag
 def product_note(order, product):
     return order.orderitem_set.get(product=product).note
+
+
+@register.simple_tag
+def product_amount_price(order, product):
+    return round(order.orderitem_set.get(product=product).amount, 2)

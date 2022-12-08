@@ -1,70 +1,85 @@
 {% extends "../index.html" %}
+{% load ordertags %}
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-light fw-bold fs-5">Client</div>
-                    <ul class="list-group list-group-flush text-end">
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">NAME:</i>{{ order.client.lastname }} {{ order.client.firstname }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">COMPANY:</i>{{ order.client.company }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">PHONE:</i>{{ order.client.phone }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">E-MAIL:</i>{{ order.client.email }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">WEBSITE:</i>{{ order.client.website }}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="card shadow">
-                    <div class="card-header bg-primary text-light fw-bold fs-5">Order</div>
-                    <ul class="list-group list-group-flush text-end">
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">DATE:</i>
-                            <br>
-                            <ul class="list-group-flush">
+    <div class="row">
+        <div class="col-md-6 gy-3">
+            {% with client=order.client %}
+                {% include 'client/_client_data_card.html' %}
+            {% endwith %}
+        </div>
+        <div class="col-md-6 gy-3">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-light fw-bold fs-5">Order</div>
+                <ul class="list-group list-group-flush text-end">
+                    <li class="list-group-item">
+                        <i class="pull-left fw-bold">USER:</i>{{ order.user.name }}
+                    </li>
+                    <li class="list-group-item">
+                        <i class="pull-left fw-bold">DATE:</i>
+                        <br>
+                        <ul class="list-group-flush">
+                            <li class="list-group-item">
+                                <i class="pull-left fw-bold">CREATED: </i>{{ order.date_created }}
+                            </li>
+                            {% if order.deadline %}
                                 <li class="list-group-item">
-                                    <i class="pull-left fw-bold">CREATED: </i>{{ order.date_created }}
+                                    <i class="pull-left fw-bold">DEADLINE: </i>{{ order.deadline }}
                                 </li>
-                                {% if order.deadline %}
-                                    <li class="list-group-item">
-                                        <i class="pull-left fw-bold">DEADLINE: </i>{{ order.deadline }}
-                                    </li>
-                                {% endif %}
-                                {% if order.finished %}
-                                    <li class="list-group-item">
-                                        <i class="pull-left fw-bold">FINISHED: </i>{{ order.finished }}
-                                    </li>
-                                {% endif %}
-                            </ul>
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">PRICE:</i>{{ order.total_amount }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.dsc_price }}%
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">MARKERS:</i>{{ order.markers }}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">STATUS:</i>
-                            {% include "./_status_btn.html" %}
-                        </li>
-                        <li class="list-group-item">
-                            <i class="pull-left fw-bold">NOTE:</i><textarea disabled class="form-control" style="height: 20vh;">{{ order.note}}</textarea>
-                        </li>
-                    </ul>
-                </div>
+                            {% endif %}
+                            {% if order.finished %}
+                                <li class="list-group-item">
+                                    <i class="pull-left fw-bold">FINISHED: </i>{{ order.finished }}
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="pull-left fw-bold">PRICE:</i>{{ order.total_amount }}
+                    </li>
+                    <li class="list-group-item">
+                        <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.dsc_price }}%
+                    </li>
+                    <li class="list-group-item">
+                        <i class="pull-left fw-bold">MARKERS:</i>{{ order.markers }}
+                    </li>
+                    <li class="list-group-item">
+                        <i class="pull-left fw-bold">NOTE:</i><textarea disabled class="form-control" style="height: 15vh;">{{ order.note}}</textarea>
+                    </li>
+                    <li class="list-group-item">
+                        <i class="pull-left fw-bold">STATUS:</i>
+                        {% include "./_status_btn.html" %}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-12 gy-3">
+            <div class="card shadow mt-3">
+                <div class="card-header bg-primary text-light fw-bold fs-5">Products</div>
+                <table class="table table-hover table-dynamic table-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Note</th>
+                            <th scope="col" class="text-end">Quantity</th>
+                            <th scope="col" class="text-end">Price</th>
+                            <th scope="col" class="text-end">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in order.products.all %}
+                            <tr>
+                                <td data-label="NAME">{{ product.name }}</td>
+                                <td data-label="NOTE">{{ product.note|default:'&nbsp;' }}</td>
+                                <td data-label="QUANTITY"  class="text-end">{% product_qty order product %} {{ product.unit.name }}</td>
+                                <td data-label="PRICE" class="text-end">{{ product.unit_price|floatformat:"2" }}</td>
+                                <td data-label="TOTAL" class="text-end">{% product_amount_price order product %}</td>
+                            </tr>
+                        {% endfor %}
+                        <tr>
+                            <td class="text-end" colspan=5>{{ order.total_amount|floatformat:"2" }}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
