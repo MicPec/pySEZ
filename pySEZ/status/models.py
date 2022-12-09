@@ -15,7 +15,7 @@ class Status(models.Model):
     STATE_CHOICES = [
         ('NOT_SET', ''),
         ('NEW', 'New'),
-        ('PROGRESS', 'In progress'),
+        ('PENDING', 'Pending'),
         ('DONE', 'Done'),
     ]
 

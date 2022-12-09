@@ -1,21 +1,75 @@
 {% extends "../index.html" %}
+{% load static %}
 {% block content %}
     <div class="row">
         <div class="col-md-3">
-            <div class="card text-bg-info mb-3 text-light" >
-
-                <div class="card-body">
-                    <row>
-                        <div class="col-xs-3"><i class="fa fa-inbox fa-5x"></i></div>
-                        <div class="col-xs-9"></div>
+            <div class="card bg-info mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-inbox fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ client.orders.count }}</p>
+                    </div>
                     </row>
                 </div>
-                <div class="card-footer">123123</div>
-              </div>
+                <a href="">
+                    <div class="card-footer text-light fs-5">Total orders count</div>
+                </a>
+            </div>
         </div>
-        <div class="col-md-3">2</div>
-        <div class="col-md-3">3</div>
-        <div class="col-md-3">4</div>
+        <div class="col-md-3">
+            <div class="card bg-danger mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-pencil-square-o fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ client.orders_new.count|default:"--" }}</p>
+                    </div>
+                    </row>
+                </div>
+                <a href="">
+                    <div class="card-footer text-light fs-5">New orders count</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning mb-3 text-dark">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-hourglass-half fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ client.orders_pending.count|default:"--" }}</p>
+                    </div>
+                    </row>
+                </div>
+                <a href="">
+                    <div class="card-footer text-dark fs-5">Pending orders count</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-check-square-o fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ client.orders_done.count|default:"--" }}</p>
+                    </div>
+                    </row>
+                </div>
+                <a href="">
+                    <div class="card-footer text-light fs-5">Finished orders count</div>
+                </a>
+            </div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-6 gy-3">{% include './_client_vcard.html' %}</div>
@@ -36,7 +90,24 @@
         </div>
     </div>
 </div>
-{% for order in client.orders.all|dictsortreversed:'date_created' %}
-    <p>{{ order }} total:{{ order.total_amount }}</p>
-{% endfor %}
+<div class="row mt-3">
+    <div class="col-md-12 mt-3">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-light fw-bold">
+                <div class="d-flex align-items-center">
+                    <div class="p-2 flex-grow-1 fs-5">Order List</div>
+                    <div class="p-2">
+                        <span class="htmx-indicator me-2">
+                            <img width="30px" src="{% static "assets/images/three-dots.svg" %}"/>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div id="partial">
+                {% with order_list=client.orders.all|dictsortreversed:'date_created' %}
+                    {% include '../order/_order_list.html' %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
 {% endblock content %}

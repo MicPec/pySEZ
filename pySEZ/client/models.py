@@ -18,5 +18,21 @@ class Client(models.Model):
         return redirect("client-detail", pk=self.pk)
 
     @property
+    def orders_new(self):
+        return self.orders.filter(status__state="NEW")
+
+    @property
+    def orders_pending(self):
+        return self.orders.filter(status__state="PENDING")
+
+    @property
+    def orders_done(self):
+        return self.orders.filter(status__state="DONE")
+
+    @property
     def fullname(self, reverse=True):
-        return f'{self.lastname} {self.firstname}' if reverse else f'{self.firstname} {self.lastname}'
+        return (
+            f"{self.lastname} {self.firstname}"
+            if reverse
+            else f"{self.firstname} {self.lastname}"
+        )
