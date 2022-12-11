@@ -9,6 +9,8 @@ from django.views.generic import (
 )
 from django.db.models import Q
 from django.urls import reverse_lazy, reverse
+
+from order.filters import OrderFilter
 from .models import Order
 from status.models import Status
 from .forms import OrderForm, OrderStatusUpdate
@@ -22,16 +24,23 @@ class OrderListView(ListView):
 
     def get_queryset(self):
         query = super().get_queryset()
+        f = OrderFilter(self.request.GET, queryset=query)
+        query = f.qs
         if s := self.request.GET.get("search"):
             query = query.filter(
-                Q(firstname__icontains=s)
-                | Q(lastname__icontains=s)
-                | Q(company__icontains=s)
+                Q(client__firstname__icontains=s)
+                | Q(client__lastname__icontains=s)
+                | Q(client__company__icontains=s)
+                | Q(note__icontains=s)
             )
         return query
 
     def get_template_names(self):
-        return ["order/_order_list.html"] if self.request.htmx else ["order/order_list.html"]
+        return (
+            ["order/_order_list.html"]
+            if self.request.htmx
+            else ["order/order_list.html"]
+        )
 
 
 class OrderDetailView(DetailView):
@@ -46,7 +55,7 @@ class OrderCreateView(CreateView):
         # if self.request.htmx:
         #     return self.request.META.get("HTTP_REFERER")
         # else:
-            return reverse_lazy("order-detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("order-detail", kwargs={"pk": self.object.pk})
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
@@ -54,12 +63,12 @@ class OrderCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Nowy Klient"
-        context["action"] = reverse('order-create')
+        context["action"] = reverse("order-create")
         return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.status = Status.objects.filter(state = 'NEW').first()
+        form.instance.status = Status.objects.filter(state="NEW").first()
         return super(OrderCreateView, self).form_valid(form)
 
 
@@ -78,7 +87,7 @@ class OrderUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Order Edit"
-        context["action"] = reverse('order-update', args=[self.object.pk])
+        context["action"] = reverse("order-update", args=[self.object.pk])
         return context
 
 
@@ -96,7 +105,7 @@ class OrderStatusUpdateView(OrderUpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Change status"
-        context["action"] = reverse('order-status-update', args=[self.object.pk])
+        context["action"] = reverse("order-status-update", args=[self.object.pk])
         return context
 
 
@@ -108,8 +117,12 @@ class OrderDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context["question"] = "Czy usunąć klienta?"
         context["subject"] = self.object
-        context["action"] = reverse('order-delete', args=[self.object.pk])
+        context["action"] = reverse("order-delete", args=[self.object.pk])
         return context
 
     def get_template_names(self):
-        return ["scraps/_confirm_delete.html"] if self.request.htmx else ["confirm_delete.html"]
+        return (
+            ["scraps/_confirm_delete.html"]
+            if self.request.htmx
+            else ["confirm_delete.html"]
+        )

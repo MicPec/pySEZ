@@ -18,7 +18,7 @@
             {% for order in order_list %}
                 <tr>
                     <td data-label="ID"  style="{{ order.status.css_bg_color }}{{ order.status.css_text_color }}">#{{ order.id }}</td>
-                    <td data-label="Client">{{ order.client|default:'&nbsp;' }}</td>
+                    <td data-label="Client"><a href="{% url 'client-detail' order.client.pk %}">{{ order.client|default:'&nbsp;' }}</a></td>
                     <td data-label="Date">
                         <ul class="">
                             <li class="list-group-item">Created : {{ order.date_created }}</li>

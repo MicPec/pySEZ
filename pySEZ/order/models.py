@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Prefetch, Sum
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib import admin
 from django.contrib.auth.models import User
@@ -59,8 +60,8 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.product.name} - ({self.quantity} {self.product.unit.name})"
 
-    def get_absolute_url(self):
-        return redirect("order-detail", pk=self.pk)
+    # def get_absolute_url(self):
+    #     return redirect("order-detail", pk=self.pk)
 
     @property
     def amount(self):
