@@ -14,7 +14,7 @@
                     </div>
                     </row>
                 </div>
-                <a href="">
+                <a href="{% url 'client-detail' client.pk %}">
                     <div class="card-footer text-light fs-5">Total orders count</div>
                 </a>
             </div>
@@ -31,7 +31,7 @@
                     </div>
                     </row>
                 </div>
-                <a href="">
+                <a href="{% url 'client-detail' client.pk %}?orders_state=NEW">
                     <div class="card-footer text-light fs-5">New orders count</div>
                 </a>
             </div>
@@ -48,7 +48,7 @@
                     </div>
                     </row>
                 </div>
-                <a href="">
+                <a href="{% url 'client-detail' client.pk %}?orders_state=PENDING">
                     <div class="card-footer text-light fs-5">Pending orders count</div>
                 </a>
             </div>
@@ -65,7 +65,7 @@
                     </div>
                     </row>
                 </div>
-                <a href="">
+                <a href="{% url 'client-detail' client.pk %}?orders_state=DONE">
                     <div class="card-footer text-light fs-5">Finished orders count</div>
                 </a>
             </div>
@@ -104,7 +104,7 @@
                 </div>
             </div>
             <div id="partial">
-                {% with order_list=client.orders.all|dictsortreversed:'date_created' %}
+                {% with order_list=orders_filtered|dictsortreversed:'date_created' %}
                     {% include '../order/_order_list.html' %}
                 {% endwith %}
             </div>

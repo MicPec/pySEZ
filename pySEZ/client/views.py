@@ -16,24 +16,37 @@ class ClientListView(ListView):
     model = Client
     ordering = ["lastname"]
     paginate_by = 5
-    # template_name = ''
 
     def get_queryset(self):
-        query = super().get_queryset()
+        qs = super().get_queryset()
         if s := self.request.GET.get("search"):
-            query = query.filter(
+            qs = qs.filter(
                 Q(firstname__icontains=s)
                 | Q(lastname__icontains=s)
                 | Q(company__icontains=s)
             )
-        return query
+        return qs
 
     def get_template_names(self):
-        return ["client/_client_list.html"] if self.request.htmx else ["client/client_list.html"]
+        return (
+            ["client/_client_list.html"]
+            if self.request.htmx
+            else ["client/client_list.html"]
+        )
 
 
 class ClientDetailView(DetailView):
     model = Client
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        match self.request.GET.get('orders_state'):
+            case 'NEW': context["orders_filtered"] = self.object.orders_new
+            case 'PENDING': context["orders_filtered"] = self.object.orders_pending
+            case 'DONE': context["orders_filtered"] = self.object.orders_done
+            case _: context["orders_filtered"] = self.object.orders.all()
+        print(context)
+        return context
 
 
 class ClientCreateView(CreateView):
@@ -52,14 +65,13 @@ class ClientCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Nowy Klient"
-        context["action"] = reverse('client-create')
+        context["action"] = reverse("client-create")
         return context
 
 
 class ClientUpdateView(UpdateView):
     model = Client
     form_class = ClientForm
-    extra_context = {"title": "Edycja Klienta"}
 
     def get_success_url(self):
         # return self.request.META.get("HTTP_REFERER")
@@ -71,7 +83,7 @@ class ClientUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Edycja Klienta"
-        context["action"] = reverse('client-update', args=[self.object.pk])
+        context["action"] = reverse("client-update", args=[self.object.pk])
         return context
 
 
@@ -83,9 +95,12 @@ class ClientDeleteView(DeleteView):
         context = super().get_context_data(**kwargs)
         context["question"] = "Czy usunąć klienta?"
         context["subject"] = self.object
-        context["action"] = reverse('client-delete', args=[self.object.pk])
+        context["action"] = reverse("client-delete", args=[self.object.pk])
         return context
 
     def get_template_names(self):
-        return ["scraps/_confirm_delete.html"] if self.request.htmx else ["confirm_delete.html"]
-
+        return (
+            ["scraps/_confirm_delete.html"]
+            if self.request.htmx
+            else ["confirm_delete.html"]
+        )
