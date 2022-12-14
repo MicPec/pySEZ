@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
                 ("deadline", models.DateField(blank=True, null=True)),
                 ("note", models.TextField(blank=True)),
                 (
-                    "dsc_price",
+                    "discount",
                     models.DecimalField(
                         blank=True,
                         decimal_places=2,

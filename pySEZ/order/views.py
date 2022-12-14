@@ -14,26 +14,27 @@ from order.filters import OrderFilter
 from .models import Order
 from status.models import Status
 from .forms import OrderForm, OrderStatusUpdate
+from django_filters.views import FilterView
 
 
-class OrderListView(ListView):
+class OrderListView(FilterView):
     model = Order
     ordering = ["-id"]
     paginate_by = 5
-    # template_name = ''
+    filterset_class = OrderFilter
 
     def get_queryset(self):
-        query = super().get_queryset()
-        f = OrderFilter(self.request.GET, queryset=query)
-        query = f.qs
+        qs = super().get_queryset()
+        f = OrderFilter(self.request.GET, queryset=qs)
+        qs = f.qs
         if s := self.request.GET.get("search"):
-            query = query.filter(
+            qs = qs.filter(
                 Q(client__firstname__icontains=s)
                 | Q(client__lastname__icontains=s)
                 | Q(client__company__icontains=s)
                 | Q(note__icontains=s)
             )
-        return query
+        return qs
 
     def get_template_names(self):
         return (

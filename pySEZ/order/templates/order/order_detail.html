@@ -34,10 +34,10 @@
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <i class="pull-left fw-bold">PRICE:</i>{{ order.total_amount }}
+                        <i class="pull-left fw-bold">PRICE:</i>{{ order.total_price }}
                     </li>
                     <li class="list-group-item">
-                        <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.dsc_price }}%
+                        <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.discount }}%
                     </li>
                     <li class="list-group-item">
                         <i class="pull-left fw-bold">MARKERS:</i>{{ order.markers }}
@@ -76,7 +76,7 @@
                             </tr>
                         {% endfor %}
                         <tr>
-                            <td class="text-end" colspan=5>{{ order.total_amount|floatformat:"2" }}</td>
+                            <td class="text-end" colspan=5>{{ order.total_price|floatformat:"2" }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -84,6 +84,6 @@
         </div>
     </div>
     {% for order in order.orders.all|dictsortreversed:'date_created' %}
-        <p>{{ order }} total:{{ order.total_amount }}</p>
+        <p>{{ order }} total:{{ order.total_price }}</p>
     {% endfor %}
 {% endblock content %}

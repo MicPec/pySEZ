@@ -1,47 +1,99 @@
 {% extends "../index.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-light fw-bold">
-                    <div class="d-flex align-items-center">
-                        <div class="p-2 flex-grow-1 fs-5">Order List</div>
-                        <div class="p-2">
-                            <span class="htmx-indicator me-2">
-                                <img width="30px" src="{% static "assets/images/three-dots.svg" %}"/>
-                            </span>
+        <div class="col-md-12 mb-3">
+            <a data-bs-target="#filters"
+               class="btn btn-info btn-sm"
+               data-bs-toggle="collapse"
+               aria-expanded="false"
+               aria-controls="filters"><i class="fa fa-filter"></i> Filters</a>
+            <div class="collapse shadow" id="filters">
+                <div class="card card-body">
+                    <form method="get"
+                          hx-get="{% url 'order-list' %}"
+                          hx-target="#partial"
+                          hx-swap="outerHTML"
+                          hx-refresh="true"
+                          hx-push-url="true">
+                        {% comment %} {{ filter.form|crispy }} {% endcomment %}
+                        <div class="row"><div class="col-md-4">
+                            <div>{{filter.form.id|as_crispy_field}}</div>
                         </div>
-                        <div class="p-2">
-                            <div>
-                                <input class="form-control form-control-sm"
-                                       type="search"
-                                       name="search"
-                                       placeholder="Szukaj"
-                                       value="{{ request.GET.search }}"
-                                       hx-swap="outerHTML"
-                                       hx-get="{% url 'order-list' %}"
-                                       hx-preserve="false"
-                                       hx-refresh="true"
-                                       hx-trigger="keyup changed delay:500ms, search"
-                                       hx-target="#partial"
-                                       hx-indicator=".htmx-indicator"/>
-                            </div>
+                        <div class="col-md-4">
+                            <div>{{filter.form.client|as_crispy_field}}</div>
                         </div>
-                        <div class="p-2">
-                            <a class="btn btn-sm btn-light text-dark form-button"
-                               href="{% url 'order-create' %}"
-                               data-bs-toggle="modal"
-                               data-bs-target="#modal"
-                               hx-refresh="true"
-                               hx-get="{% url 'order-create' %}"
-                               hx-target=".modal-content"
-                               hx-trigger="click"><i class="fa fa-user-plus" aria-hidden="true"></i> New order</a>
+                        <div class="col-md-4">
+                            <div>{{filter.form.user|as_crispy_field}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div>{{filter.form.date_created__lte|as_crispy_field}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div>{{filter.form.date_finished__lte|as_crispy_field}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div>{{filter.form.deadline__lte|as_crispy_field}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div>{{filter.form.status|as_crispy_field}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div>{{filter.form.status__state|as_crispy_field}}</div>
                         </div>
                     </div>
+                        <input class="btn btn-secondary m-5 "
+                               type="submit"
+                               value="Filter"
+                               hx-trigger="click"/>
+                    </form>
                 </div>
-                <div id="partial">{% include "./_order_list.html" %}</div>
             </div>
         </div>
     </div>
+    <div class="col-md-12">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-light fw-bold">
+                <div class="d-flex align-items-center">
+                    <div class="p-2 flex-grow-1 fs-5">Order List</div>
+                    <div class="p-2">
+                        <span class="htmx-indicator me-2">
+                            <img width="30px" src="{% static "assets/images/three-dots.svg" %}"/>
+                        </span>
+                    </div>
+                    <div class="p-2">
+                        <div>
+                            <input class="form-control form-control-sm"
+                                   type="search"
+                                   name="search"
+                                   placeholder="Szukaj"
+                                   value="{{ request.GET.search }}"
+                                   hx-swap="outerHTML"
+                                   hx-get="{% url 'order-list' %}"
+                                   hx-preserve="false"
+                                   hx-refresh="true"
+                                   hx-trigger="keyup changed delay:500ms, search"
+                                   hx-target="#partial"
+                                   hx-indicator=".htmx-indicator"/>
+                        </div>
+                    </div>
+                    <div class="p-2">
+                        <a class="btn btn-sm btn-light text-dark form-button"
+                           href="{% url 'order-create' %}"
+                           data-bs-toggle="modal"
+                           data-bs-target="#modal"
+                           {% comment %}
+                           hx-refresh="true"
+                           {% endcomment %}
+                           hx-get="{% url 'order-create' %}"
+                           hx-target=".modal-content"
+                           hx-trigger="click"><i class="fa fa-user-plus" aria-hidden="true"></i> New order</a>
+                    </div>
+                </div>
+            </div>
+            <div id="partial">{% include "./_order_list.html" %}</div>
+        </div>
+    </div>
+</div>
 {% endblock content %}

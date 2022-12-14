@@ -7,13 +7,11 @@ from pySEZ.utils import opposite_color, get_sentinel_user
 
 
 class Status(models.Model):
-    NOT_SET = 'NOT_SET'
     NEW = 'NEW'
     PROGRESS = 'PROGRESS'
     DONE = 'DONE'
 
     STATE_CHOICES = [
-        ('NOT_SET', ''),
         ('NEW', 'New'),
         ('PENDING', 'Pending'),
         ('DONE', 'Done'),
@@ -23,7 +21,7 @@ class Status(models.Model):
     color = models.CharField(max_length=7, default='#eeeeee')
     state = models.CharField(max_length=8,
                              choices=STATE_CHOICES,
-                             default=NOT_SET)
+                             default=NEW)
 
     def __str__(self):
         return self.name

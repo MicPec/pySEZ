@@ -12,7 +12,7 @@ class OrderForm(ModelForm):
             "client",
             "deadline",
             "note",
-            "dsc_price",
+            "discount",
             "products",
         )
 

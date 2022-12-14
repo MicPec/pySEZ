@@ -20,13 +20,19 @@
                     <td data-label="ID"  style="{{ order.status.css_bg_color }}{{ order.status.css_text_color }}">#{{ order.id }}</td>
                     <td data-label="Client"><a href="{% url 'client-detail' order.client.pk %}">{{ order.client|default:'&nbsp;' }}</a></td>
                     <td data-label="Date">
-                        <ul class="">
+                        <ul>
                             <li class="list-group-item">Created : {{ order.date_created }}</li>
                             {% if order.date_finished %}<li class="list-group-item">Deadline : {{ order.date_finished }}</li>{% endif %}
                             {% if order.deadline %}<li class="list-group-item">Finished : {{ order.deadline }}</li>{% endif %}
                         </ul>
                     </td>
-                    <td data-label="Price" class="text-end">{{ order.dsc_price|default:order.total_amount|floatformat:"2" }}</td>
+                    <td data-label="Price" class="text-end">
+                        <ul>{% if order.discount  %}
+                            <li class="list-group-item">Price: {{ order.total_price|floatformat:"2"}}</li>
+                            <li class="list-group-item">Discount: {{ order.discount }}%</li>{% endif %}
+                            <li class="list-group-item">Total: {{order.discounted_price|floatformat:"2"}}</li>
+                        </ul>
+                    </td>
                     <td data-label="Note">{{ order.note|default:"&nbsp;" }}</td>
                     <td data-label="Products">
                         {% for product in order.products.all  %}

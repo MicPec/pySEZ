@@ -16,14 +16,8 @@ class Order(models.Model):
     date_finished = models.DateTimeField(blank=True, null=True)
     deadline = models.DateField(blank=True, null=True)
     note = models.TextField(blank=True)
-    dsc_price = models.DecimalField(
-        max_digits=20,
-        decimal_places=2,
-        validators=[
-            MinValueValidator(0.0),
-        ],
-        blank=True,
-        null=True,
+    discount = models.IntegerField(
+        validators=[MinValueValidator(-100), MaxValueValidator(999)], default=0
     )
     user = models.ForeignKey(User, on_delete=models.SET(get_sentinel_user))
     status = models.ForeignKey(Status, on_delete=models.CASCADE)
@@ -43,7 +37,11 @@ class Order(models.Model):
         )
 
     @property
-    def total_amount(self):
+    def discounted_price(self):
+        return self.total_price + (self.total_price * self.discount / 100)
+
+    @property
+    def total_price(self): 
         return sum(oi.amount for oi in self.orderitem_set.all())
 
     @admin.display
