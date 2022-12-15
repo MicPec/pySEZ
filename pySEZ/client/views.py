@@ -25,7 +25,7 @@ class ClientListView(ListView):
                 | Q(lastname__icontains=s)
                 | Q(company__icontains=s)
             )
-        return qs
+        return qs.order_by("-status__state", "-deadline", "-date_created")
 
     def get_template_names(self):
         return (

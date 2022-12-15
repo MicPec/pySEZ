@@ -22,15 +22,15 @@
                     <td data-label="Date">
                         <ul>
                             <li class="list-group-item">Created : {{ order.date_created }}</li>
-                            {% if order.date_finished %}<li class="list-group-item">Deadline : {{ order.date_finished }}</li>{% endif %}
-                            {% if order.deadline %}<li class="list-group-item">Finished : {{ order.deadline }}</li>{% endif %}
+                            {% if order.deadline %}<li class="list-group-item">Deadline : {{ order.deadline }}</li>{% endif %}
+                            {% if order.date_finished %}<li class="list-group-item">Finished : {{ order.date_finished }}</li>{% endif %}
                         </ul>
                     </td>
                     <td data-label="Price" class="text-end">
                         <ul>{% if order.discount  %}
                             <li class="list-group-item">Price: {{ order.total_price|floatformat:"2"}}</li>
                             <li class="list-group-item">Discount: {{ order.discount }}%</li>{% endif %}
-                            <li class="list-group-item">Total: {{order.discounted_price|floatformat:"2"}}</li>
+                            <li class="list-group-item">Final: {{order.discounted_price|floatformat:"2"}}</li>
                         </ul>
                     </td>
                     <td data-label="Note">{{ order.note|default:"&nbsp;" }}</td>

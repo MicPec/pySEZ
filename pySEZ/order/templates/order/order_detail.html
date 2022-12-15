@@ -9,8 +9,33 @@
         </div>
         <div class="col-md-6 gy-3">
             <div class="card shadow">
+                <div class="card-header bg-primary text-light fw-bold fs-5">Actions</div>
+                <ul class="list-group list-group-flush p-5">
+                    <a class="btn btn-primary btn-sm m-5 p-5"
+                       title="Edit"
+                       href="{% url 'order-update' order.pk %}"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modal"
+                       hx-get="{% url 'order-update' order.pk %}"
+                       hx-target=".modal-content"
+                       hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                    <a class="confirm btn btn-danger btn-sm m-5 p-5"
+                       title="Delete"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modal"
+                       hx-get="{% url 'order-delete' order.pk %}"
+                       hx-target=".modal-content"
+                       hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i> delete</a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-6 gy-3">
+            <div class="card shadow">
                 <div class="card-header bg-primary text-light fw-bold fs-5">Order</div>
                 <ul class="list-group list-group-flush text-end">
+                    <li class="list-group-item">
+                        <i class="pull-left fw-bold">ID:</i>#{{ order.id }}
+                    </li>
                     <li class="list-group-item">
                         <i class="pull-left fw-bold">USER:</i>{{ order.user.name }}
                     </li>
@@ -34,11 +59,16 @@
                         </ul>
                     </li>
                     <li class="list-group-item">
-                        <i class="pull-left fw-bold">PRICE:</i>{{ order.total_price }}
+                        <i class="pull-left fw-bold">PRICE:</i>{{ order.total_price|floatformat:"2" }}
                     </li>
-                    <li class="list-group-item">
-                        <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.discount }}%
-                    </li>
+                    {% if order.discount %}
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.discount }}%
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">FINAL PRICE:</i>{{ order.discounted_price|floatformat:"2" }}
+                        </li>
+                    {% endif %}
                     <li class="list-group-item">
                         <i class="pull-left fw-bold">MARKERS:</i>{{ order.markers }}
                     </li>
@@ -52,8 +82,8 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-12 gy-3">
-            <div class="card shadow mt-3">
+        <div class="col-md-6 gy-3">
+            <div class="card shadow">
                 <div class="card-header bg-primary text-light fw-bold fs-5">Products</div>
                 <table class="table table-hover table-dynamic table-sm">
                     <thead class="table-dark">

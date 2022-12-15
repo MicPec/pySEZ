@@ -92,7 +92,7 @@
                     </div>
                 </div>
             </div>
-            <div id="partial">{% include "./_order_list.html" %}</div>
+            <div id="partial" hx-trigger="load, orderListChanged from:body" hx-get="{% url 'order-list' %}" hx-target="this">{% include "./_order_list.html" %}</div>
         </div>
     </div>
 </div>

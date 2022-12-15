@@ -1,12 +1,13 @@
-from django.db import models
-from django.db.models import Prefetch, Sum
-from django.core.validators import MinValueValidator, MaxValueValidator
+from client.models import Client
 from django.contrib import admin
 from django.contrib.auth.models import User
-from client.models import Client
-from status.models import Status
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db import models
+from django.db.models import Prefetch, Sum
 from marker.models import Marker
 from product.models import Product
+from status.models import Status
+
 from pySEZ.utils import get_sentinel_user
 
 
@@ -41,7 +42,7 @@ class Order(models.Model):
         return self.total_price + (self.total_price * self.discount / 100)
 
     @property
-    def total_price(self): 
+    def total_price(self):
         return sum(oi.amount for oi in self.orderitem_set.all())
 
     @admin.display

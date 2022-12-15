@@ -1,25 +1,26 @@
-from django.shortcuts import render, redirect
-from django.http import request
-from django.views.generic import (
-    ListView,
-    DetailView,
-    CreateView,
-    UpdateView,
-    DeleteView,
-)
 from django.db.models import Q
-from django.urls import reverse_lazy, reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, render
+from django.urls import reverse, reverse_lazy
+from django.views.generic import (
+    CreateView,
+    DeleteView,
+    DetailView,
+    ListView,
+    UpdateView,
+)
+from django_filters.views import FilterView
 
 from order.filters import OrderFilter
-from .models import Order
 from status.models import Status
+
 from .forms import OrderForm, OrderStatusUpdate
-from django_filters.views import FilterView
+from .models import Order
 
 
 class OrderListView(FilterView):
     model = Order
-    ordering = ["-id"]
+    ordering = ["-status__state", "-deadline", "-date_created"]
     paginate_by = 5
     filterset_class = OrderFilter
 
@@ -53,9 +54,8 @@ class OrderCreateView(CreateView):
     form_class = OrderForm
 
     def get_success_url(self):
-        # if self.request.htmx:
-        #     return self.request.META.get("HTTP_REFERER")
-        # else:
+        if self.request.htmx:
+            return self.request.META.get("HTTP_REFERER")
         return reverse_lazy("order-detail", kwargs={"pk": self.object.pk})
 
     def get_template_names(self):
@@ -79,8 +79,11 @@ class OrderUpdateView(UpdateView):
     extra_context = {"title": "Edycja Klienta"}
 
     def get_success_url(self):
-        # return self.request.META.get("HTTP_REFERER")
-        return reverse_lazy("order-list")
+        return self.request.META.get("HTTP_REFERER")
+
+        if self.request.htmx:
+            return self.request.META.get("HTTP_REFERER")
+        return reverse_lazy("order-detail", kwargs={"pk": self.object.pk})
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
@@ -89,6 +92,7 @@ class OrderUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Order Edit"
         context["action"] = reverse("order-update", args=[self.object.pk])
+        # context["next"] =  self.request.META.get("HTTP_REFERER")
         return context
 
 
@@ -116,7 +120,7 @@ class OrderDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["question"] = "Czy usunąć klienta?"
+        context["question"] = "Do you want to delete the order?"
         context["subject"] = self.object
         context["action"] = reverse("order-delete", args=[self.object.pk])
         return context
