@@ -27,14 +27,14 @@
                         <div class="col-md-4">
                             <div>{{filter.form.user|as_crispy_field}}</div>
                         </div>
+                        <div class="col-md-4"><div class="input-group">
+                            <div>{{filter.form.date_created|as_crispy_field}}</div>
+                        </div></div>
                         <div class="col-md-4">
-                            <div>{{filter.form.date_created__lte|as_crispy_field}}</div>
+                            <div>{{filter.form.date_finished|as_crispy_field}}</div>
                         </div>
                         <div class="col-md-4">
-                            <div>{{filter.form.date_finished__lte|as_crispy_field}}</div>
-                        </div>
-                        <div class="col-md-4">
-                            <div>{{filter.form.deadline__lte|as_crispy_field}}</div>
+                            <div>{{filter.form.deadline|as_crispy_field}}</div>
                         </div>
                         <div class="col-md-4">
                             <div>{{filter.form.status|as_crispy_field}}</div>

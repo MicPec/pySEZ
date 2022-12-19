@@ -32,9 +32,9 @@ class Order(models.Model):
     def __str__(self):
         return (
             f"{self.client} | "
-            f'Data: {self.date_created.strftime("%Y-%m-%d") } | '
+            f'Date: {self.date_created.strftime("%Y-%m-%d") } | '
             f"Status: {self.status} | "
-            f'Produkty: {", ".join([p.name for p in self.products.all()])}'
+            f'Products: {", ".join([p.name for p in self.products.all()])}'
         )
 
     @property

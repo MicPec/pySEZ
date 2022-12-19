@@ -35,7 +35,7 @@ class OrderListView(FilterView):
                 | Q(client__company__icontains=s)
                 | Q(note__icontains=s)
             )
-        return qs
+        return qs.order_by("-status__state", "-deadline", "-date_created")
 
     def get_template_names(self):
         return (

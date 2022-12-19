@@ -25,7 +25,7 @@ class ClientListView(ListView):
                 | Q(lastname__icontains=s)
                 | Q(company__icontains=s)
             )
-        return qs.order_by("-status__state", "-deadline", "-date_created")
+        return qs.order_by("lastname",)
 
     def get_template_names(self):
         return (
@@ -45,7 +45,6 @@ class ClientDetailView(DetailView):
             case 'PENDING': context["orders_filtered"] = self.object.orders_pending
             case 'DONE': context["orders_filtered"] = self.object.orders_done
             case _: context["orders_filtered"] = self.object.orders.all()
-        print(context)
         return context
 
 
@@ -64,7 +63,7 @@ class ClientCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Nowy Klient"
+        context["title"] = "New client"
         context["action"] = reverse("client-create")
         return context
 
@@ -74,15 +73,15 @@ class ClientUpdateView(UpdateView):
     form_class = ClientForm
 
     def get_success_url(self):
-        # return self.request.META.get("HTTP_REFERER")
-        return reverse_lazy("client-list")
+        return self.request.META.get("HTTP_REFERER")
+        # return reverse_lazy("client-list")
 
     def get_template_names(self):
         return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Edycja Klienta"
+        context["title"] = "Edit client"
         context["action"] = reverse("client-update", args=[self.object.pk])
         return context
 
@@ -93,7 +92,7 @@ class ClientDeleteView(DeleteView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["question"] = "Czy usunąć klienta?"
+        context["question"] = "Delete client?"
         context["subject"] = self.object
         context["action"] = reverse("client-delete", args=[self.object.pk])
         return context

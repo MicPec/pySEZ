@@ -16,10 +16,16 @@ class OrderForm(ModelForm):
             "products",
         )
 
-class OrderStatusUpdate(ModelForm):
+        widgets = {
+            "deadline": forms.DateInput(attrs={"type": "date"}),
+            "note": forms.Textarea(attrs={"rows": 2}),
+            "discount": forms.NumberInput(
+                attrs={"type": "number", "min": -100, "max": 999, "step": 0.01}
+            ),
+        }
 
+
+class OrderStatusUpdate(ModelForm):
     class Meta:
         model = Order
-        fields = (
-            "status",
-        )
+        fields = ("status",)
