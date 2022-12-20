@@ -6,5 +6,6 @@ from .models import Product, Unit
 class ProductInfo(admin.ModelAdmin):
     list_display = ('name', 'unit', 'unit_price')
 
-
-admin.site.register(Unit)
+@admin.register(Unit)
+class UnitInfo(admin.ModelAdmin):
+    list_display = ('name', 'minvalue', 'maxvalue', 'step')

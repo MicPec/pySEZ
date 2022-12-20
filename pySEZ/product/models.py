@@ -4,6 +4,9 @@ from django.db import models
 class Unit(models.Model):
     db_column = 'unity'
     name = models.CharField(max_length=50)
+    minvalue = models.DecimalField(max_digits=20, decimal_places=2, default=0, blank=True, null=True)
+    maxvalue = models.DecimalField(max_digits=20, decimal_places=2, blank=True, null=True)
+    step = models.DecimalField(max_digits=5, decimal_places=2, default=1, blank=True, null=True)
 
     def __str__(self):
         return self.name
