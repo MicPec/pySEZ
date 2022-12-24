@@ -14,8 +14,10 @@ from django_filters.views import FilterView
 from order.filters import OrderFilter
 from status.models import Status
 
-from .forms import OrderForm, OrderStatusUpdate
+from .forms import OrderForm, OrderStatusUpdate, OrderProductFormSet
 from .models import Order
+
+# multiform update view
 
 
 class OrderListView(FilterView):
@@ -67,26 +69,17 @@ class OrderCreateView(CreateView):
         context["action"] = reverse("order-create")
         return context
 
-    def form_valid(self, form):
-        form.instance.user = self.request.user
-        form.instance.status = Status.objects.filter(state="NEW").first()
-        return super(OrderCreateView, self).form_valid(form)
-
 
 class OrderUpdateView(UpdateView):
     model = Order
-    form_class = OrderForm
-    extra_context = {"title": "Edycja Klienta"}
+    form_class = OrderProductFormSet
+    extra_context = {"title": "Edit Order"}
 
     def get_success_url(self):
-        return self.request.META.get("HTTP_REFERER")
-
-        if self.request.htmx:
-            return self.request.META.get("HTTP_REFERER")
         return reverse_lazy("order-detail", kwargs={"pk": self.object.pk})
 
     def get_template_names(self):
-        return ["scraps/_edit_form.html"] if self.request.htmx else ["edit_form.html"]
+        return ["order/edit_form.html"]
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,6 +87,10 @@ class OrderUpdateView(UpdateView):
         context["action"] = reverse("order-update", args=[self.object.pk])
         # context["next"] =  self.request.META.get("HTTP_REFERER")
         return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(OrderUpdateView, self).form_valid(form)
 
 
 class OrderStatusUpdateView(OrderUpdateView):

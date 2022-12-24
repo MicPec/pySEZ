@@ -1,9 +1,10 @@
 import django_filters as DF
-from django_filters.widgets import DateRangeWidget
 from crispy_forms.bootstrap import AppendedText, FormActions, PrependedText
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Button, Column, Div, Field, Layout, Row, Submit
+from crispy_forms.layout import (HTML, Button, Column, Div, Field, Layout, Row,
+                                 Submit)
 from django import forms
+from django_filters.widgets import DateRangeWidget
 from order.models import Order
 
 
@@ -22,12 +23,14 @@ class OrderFilter(DF.FilterSet):
     deadline = DF.DateFromToRangeFilter(
         field_name="deadline",
         label="Deadline",
-        widget=DateRangeWidget(attrs={"class": "form-control", "type": "date"}),
+        widget=DateRangeWidget(
+            attrs={"class": "form-control", "type": "date"}),
     )
     date_finished = DF.DateFromToRangeFilter(
         field_name="date_finished",
         label="Date finished",
-        widget=DateRangeWidget(attrs={"class": "form-control", "type": "date"}),
+        widget=DateRangeWidget(
+            attrs={"class": "form-control", "type": "date"}),
     )
 
     class Meta:
