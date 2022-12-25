@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.forms import inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
@@ -14,8 +15,8 @@ from django_filters.views import FilterView
 from order.filters import OrderFilter
 from status.models import Status
 
-from .forms import OrderForm, OrderStatusUpdate, OrderProductFormSet
-from .models import Order
+from .forms import OrderForm, OrderItemForm, OrderStatusUpdate
+from .models import Order, OrderItem
 
 # multiform update view
 
@@ -72,7 +73,7 @@ class OrderCreateView(CreateView):
 
 class OrderUpdateView(UpdateView):
     model = Order
-    form_class = OrderProductFormSet
+    form_class = OrderForm
     extra_context = {"title": "Edit Order"}
 
     def get_success_url(self):
@@ -86,6 +87,9 @@ class OrderUpdateView(UpdateView):
         context["title"] = "Order Edit"
         context["action"] = reverse("order-update", args=[self.object.pk])
         # context["next"] =  self.request.META.get("HTTP_REFERER")
+        OrderItemFormSet = inlineformset_factory(
+            Order, OrderItem, form=OrderItemForm, extra=1, can_delete=True)
+        context["formset"] = OrderItemFormSet(instance=self.object)
         return context
 
     def form_valid(self, form):
