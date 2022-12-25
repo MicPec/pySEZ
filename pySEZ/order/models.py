@@ -43,8 +43,11 @@ class Order(models.Model):
 
     @property
     def total_price(self):
-        return sum(oi.amount for oi in self.orderitem_set.all())
+        # return sum(oi.amount for oi in self.orderitem_set.all())
+        products = self.products.all().prefetch_related(lookups=Prefetch("orderitem_set"))
+        return products.aggregate(Sum("orderitem__price"))["orderitem__price__sum"]
 
+    
     @admin.display
     def get_products(self):
         return ", ".join([p.name for p in self.products.all()])
