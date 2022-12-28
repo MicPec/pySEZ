@@ -38,16 +38,16 @@ class Order(models.Model):
         )
 
     @property
-    def discounted_price(self):
+    def discounted_price(self) -> float:
         return self.total_price + (self.total_price * self.discount / 100)
 
     @property
-    def total_price(self):
+    def total_price(self) -> float:
         # return sum(oi.amount for oi in self.orderitem_set.all())
-        products = self.products.all().prefetch_related(lookups=Prefetch("orderitem_set"))
-        return products.aggregate(Sum("orderitem__price"))["orderitem__price__sum"]
+        products = self.orderitem_set.all().prefetch_related(Prefetch("product"))
+        return products.aggregate(
+            Sum("product__unit_price"))["product__unit_price__sum"]
 
-    
     @admin.display
     def get_products(self):
         return ", ".join([p.name for p in self.products.all()])

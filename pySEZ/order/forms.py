@@ -1,34 +1,21 @@
-from django.forms import ModelForm, inlineformset_factory
+from django.forms import ModelForm
 from django import forms
+
+from product.models import Product
 from .models import Order, OrderItem
 
 
-# class OrderProductForm(ModelForm):
-#     class Meta:
-#         model = OrderItem
-#         fields = (
-#             "product",
-#             "quantity",
-#             "note",
-#         )
-
-#         widgets = {
-#             "note": forms.Textarea(attrs={"rows": 3}),
-#             "quantity": forms.NumberInput(attrs={"type": "number", "step": 0.01}),
-#         }
-
 class OrderItemForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ModelForm, self).__init__(*args, **kwargs)
-        self.model = OrderItem
-        self.fields['quantity'].widget.attrs.update(
-            {'min': self.get_object().product.unit.minvalue,
-             'max': self.get_object().product.unit.maxvalue,
-             'step': self.get_object().product.unit.step})
+        super(OrderItemForm, self).__init__(*args, **kwargs)
+        self.fields["quantity"].widget.attrs.update(
+            {
+                # "min": self.instance.product.unit.minvalue,
+                # "max": self.instance.product.unit.maxvalue,
+                # "step": self.instance.product.unit.step,
+            }
+        )
 
-    def get_object(self):
-        obj = self.model.objects.get(pk=self.instance.pk)
-        return obj
     class Meta:
         model = OrderItem
         fields = (
@@ -38,11 +25,9 @@ class OrderItemForm(ModelForm):
         )
 
         widgets = {
-            "quantity": forms.NumberInput(attrs={"type": "number", "step": 0.01}),
+            "quantity": forms.NumberInput(attrs={"type": "number"}),
             "note": forms.Textarea(attrs={"rows": 3}),
         }
-
-
 
 
 class OrderForm(ModelForm):

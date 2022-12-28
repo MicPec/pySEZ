@@ -74,7 +74,6 @@ class OrderCreateView(CreateView):
 class OrderUpdateView(UpdateView):
     model = Order
     form_class = OrderForm
-    extra_context = {"title": "Edit Order"}
 
     def get_success_url(self):
         return reverse_lazy("order-detail", kwargs={"pk": self.object.pk})
@@ -84,12 +83,9 @@ class OrderUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["title"] = "Order Edit"
+        context["title"] = "Edit Order"
         context["action"] = reverse("order-update", args=[self.object.pk])
         # context["next"] =  self.request.META.get("HTTP_REFERER")
-        OrderItemFormSet = inlineformset_factory(
-            Order, OrderItem, form=OrderItemForm, extra=1, can_delete=True)
-        context["formset"] = OrderItemFormSet(instance=self.object)
         return context
 
     def form_valid(self, form):
@@ -113,6 +109,9 @@ class OrderStatusUpdateView(OrderUpdateView):
         context["title"] = "Change status"
         context["action"] = reverse("order-status-update", args=[self.object.pk])
         return context
+
+    def form_valid(self, form):
+        return super(OrderStatusUpdateView, self).form_valid(form)
 
 
 class OrderDeleteView(DeleteView):
