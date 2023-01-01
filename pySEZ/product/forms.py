@@ -22,7 +22,10 @@ class ProductForm(ModelForm):
     #     obj = self.model.objects.get(pk=self.instance.pk)
     #     return obj
 
-
     class Meta:
-        model=Product
-        fields = ("name", "unit",  "unit_price",)
+        model = Product
+        fields = (
+            "name",
+            "unit",
+            "unit_price",
+        )

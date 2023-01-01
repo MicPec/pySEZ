@@ -10,7 +10,7 @@
                         <div class="peers ai-c fxw-nw">
                             <div class="peer">
                                 <div class="logo">
-                                    <img src="{% static 'assets/images/logo.png' %}" alt="">
+                                    <img src="{% static 'assets/images/logo.svg' %}" alt="">
                                 </div>
                             </div>
                             <div class="peer peer-greed">
@@ -65,7 +65,6 @@
                     <span class="title">Products</span>
                 </a>
             </li>
-            
             {% comment %} <li class="nav-item dropdown">
                 <a class="dropdown-toggle" href="javascript:void(0);">
                     <span class="icon-holder">
@@ -345,7 +344,8 @@
             <li role="separator" class="divider">
             </li>
             <li>
-                <a href="" class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
+                <a href="{% url 'user-logout' %}"
+                   class="d-b td-n pY-5 bgcH-grey-100 c-grey-700">
                     <i class="ti-power-off mR-10"></i>
                     <span>Logout</span>
                 </a>

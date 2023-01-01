@@ -4,6 +4,11 @@ register = template.Library()
 
 
 @register.simple_tag
+def orderitem(order, product):
+    return order.orderitem_set.get(product=product).pk
+
+
+@register.simple_tag
 def product_qty(order, product):
     return order.orderitem_set.get(product=product).quantity
 

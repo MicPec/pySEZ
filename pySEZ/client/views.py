@@ -10,12 +10,13 @@ from django.db.models import Q
 from django.urls import reverse_lazy, reverse
 from .models import Client
 from .forms import ClientForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     ordering = ["lastname"]
-    paginate_by = 5
+    paginate_by = 10
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -24,8 +25,12 @@ class ClientListView(ListView):
                 Q(firstname__icontains=s)
                 | Q(lastname__icontains=s)
                 | Q(company__icontains=s)
+                | Q(email__icontains=s)
+                | Q(phone__icontains=s)
             )
-        return qs.order_by("lastname",)
+        return qs.order_by(
+            "lastname",
+        )
 
     def get_template_names(self):
         return (
@@ -35,20 +40,24 @@ class ClientListView(ListView):
         )
 
 
-class ClientDetailView(DetailView):
+class ClientDetailView(LoginRequiredMixin, DetailView):
     model = Client
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        match self.request.GET.get('orders_state'):
-            case 'NEW': context["orders_filtered"] = self.object.orders_new
-            case 'PENDING': context["orders_filtered"] = self.object.orders_pending
-            case 'DONE': context["orders_filtered"] = self.object.orders_done
-            case _: context["orders_filtered"] = self.object.orders.all()
+        match self.request.GET.get("orders_state"):
+            case "NEW":
+                context["orders_filtered"] = self.object.orders_new
+            case "PENDING":
+                context["orders_filtered"] = self.object.orders_pending
+            case "DONE":
+                context["orders_filtered"] = self.object.orders_done
+            case _:
+                context["orders_filtered"] = self.object.orders.all()
         return context
 
 
-class ClientCreateView(CreateView):
+class ClientCreateView(LoginRequiredMixin, CreateView):
     model = Client
     form_class = ClientForm
 
@@ -68,7 +77,7 @@ class ClientCreateView(CreateView):
         return context
 
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView(LoginRequiredMixin, UpdateView):
     model = Client
     form_class = ClientForm
 
@@ -86,7 +95,7 @@ class ClientUpdateView(UpdateView):
         return context
 
 
-class ClientDeleteView(DeleteView):
+class ClientDeleteView(LoginRequiredMixin, DeleteView):
     model = Client
     success_url = "/clients/"
 

@@ -1,3 +1,4 @@
+from django.shortcuts import redirect
 from client.models import Client
 from django.contrib import admin
 from django.contrib.auth.models import User
@@ -8,20 +9,29 @@ from marker.models import Marker
 from product.models import Product
 from status.models import Status
 
-from pySEZ.utils import get_sentinel_user
+from pySEZ.utils import get_sentinel_client, get_sentinel_user
 
 
 class Order(models.Model):
-    client = models.ForeignKey(Client, related_name="orders", on_delete=models.RESTRICT)
+    class Meta:
+        ordering = ["-status__state", "-deadline", "-date_created"]
+
+    client = models.ForeignKey(Client, related_name="orders", on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
     date_finished = models.DateTimeField(blank=True, null=True)
     deadline = models.DateField(blank=True, null=True)
     note = models.TextField(blank=True)
-    discount = models.IntegerField(
-        validators=[MinValueValidator(-100), MaxValueValidator(999)], default=0
+    discount = models.DecimalField(
+        validators=[MinValueValidator(-100), MaxValueValidator(999)],
+        default=0,
+        max_digits=5,
+        decimal_places=2,
     )
     user = models.ForeignKey(User, on_delete=models.SET(get_sentinel_user))
-    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    status = models.ForeignKey(
+        Status,
+        on_delete=models.CASCADE,
+    )
     products = models.ManyToManyField(
         Product, related_name="orders", through="OrderItem"
     )
@@ -43,10 +53,11 @@ class Order(models.Model):
 
     @property
     def total_price(self) -> float:
-        # return sum(oi.amount for oi in self.orderitem_set.all())
-        products = self.orderitem_set.all().prefetch_related(Prefetch("product"))
-        return products.aggregate(
-            Sum("product__unit_price"))["product__unit_price__sum"]
+        return sum(oi.price for oi in self.orderitem_set.all())
+        # products = self.orderitem_set.all().prefetch_related(Prefetch("product"))
+        # return (
+        #     products.aggregate(Sum("product__price"))["product__unit_price__sum"] or 0
+        # )
 
     @admin.display
     def get_products(self):
@@ -56,7 +67,7 @@ class Order(models.Model):
 class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    quantity = models.DecimalField(default=1.0, max_digits=10, decimal_places=2)
+    quantity = models.DecimalField(default=1, max_digits=10, decimal_places=2)
     note = models.TextField(blank=True)
 
     def __str__(self):
@@ -66,5 +77,5 @@ class OrderItem(models.Model):
     #     return redirect("order-detail", pk=self.pk)
 
     @property
-    def amount(self):
+    def price(self):
         return self.quantity * self.product.unit_price

@@ -3511,7 +3511,7 @@ fieldset:disabled .btn {
 }
 
 .btn-primary {
-  --bs-btn-color: #000;
+  --bs-btn-color: #fff;
   --bs-btn-bg: #2196f3;
   --bs-btn-border-color: #2196f3;
   --bs-btn-hover-color: #000;
@@ -3545,7 +3545,7 @@ fieldset:disabled .btn {
 }
 
 .btn-success {
-  --bs-btn-color: #000;
+  --bs-btn-color: #fff;
   --bs-btn-bg: #4caf50;
   --bs-btn-border-color: #4caf50;
   --bs-btn-hover-color: #000;
@@ -3562,7 +3562,7 @@ fieldset:disabled .btn {
 }
 
 .btn-info {
-  --bs-btn-color: #000;
+  --bs-btn-color: #fff;
   --bs-btn-bg: #00bcd4;
   --bs-btn-border-color: #00bcd4;
   --bs-btn-hover-color: #000;
@@ -3596,7 +3596,7 @@ fieldset:disabled .btn {
 }
 
 .btn-danger {
-  --bs-btn-color: #000;
+  --bs-btn-color: #fff;
   --bs-btn-bg: #f44336;
   --bs-btn-border-color: #f44336;
   --bs-btn-hover-color: #000;
@@ -3649,7 +3649,7 @@ fieldset:disabled .btn {
 .btn-outline-primary {
   --bs-btn-color: #2196f3;
   --bs-btn-border-color: #2196f3;
-  --bs-btn-hover-color: #000;
+  --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: #2196f3;
   --bs-btn-hover-border-color: #2196f3;
   --bs-btn-focus-shadow-rgb: 33, 150, 243;
@@ -3683,7 +3683,7 @@ fieldset:disabled .btn {
 .btn-outline-success {
   --bs-btn-color: #4caf50;
   --bs-btn-border-color: #4caf50;
-  --bs-btn-hover-color: #000;
+  --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: #4caf50;
   --bs-btn-hover-border-color: #4caf50;
   --bs-btn-focus-shadow-rgb: 76, 175, 80;
@@ -3700,7 +3700,7 @@ fieldset:disabled .btn {
 .btn-outline-info {
   --bs-btn-color: #00bcd4;
   --bs-btn-border-color: #00bcd4;
-  --bs-btn-hover-color: #000;
+  --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: #00bcd4;
   --bs-btn-hover-border-color: #00bcd4;
   --bs-btn-focus-shadow-rgb: 0, 188, 212;
@@ -3734,7 +3734,7 @@ fieldset:disabled .btn {
 .btn-outline-danger {
   --bs-btn-color: #f44336;
   --bs-btn-border-color: #f44336;
-  --bs-btn-hover-color: #000;
+  --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: #f44336;
   --bs-btn-hover-border-color: #f44336;
   --bs-btn-focus-shadow-rgb: 244, 67, 54;
@@ -13133,21 +13133,21 @@ hr {
   border-top: 1px solid rgba(0, 0, 0, 0.0625);
 }
 
-a.btn {
+/* a.btn {
   color: #fff;
 }
 
 a.btn:hover {
   color: #fff;
-}
+} */
 
-.btn-color {
+/* .btn-color {
   color: #fff;
 }
 
 .btn-color:hover {
   color: #fff;
-}
+} */
 
 .sidebar {
   background-color: #fff;

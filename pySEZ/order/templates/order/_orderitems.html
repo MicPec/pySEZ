@@ -1,0 +1,63 @@
+{% load ordertags %}
+<div class="col-md-6 gy-3">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-light fw-bold fs-5">
+            Products
+            <a class="btn btn-primary float-end"
+               title="Add product"
+               href="{% url 'orderitem-create' order.pk %}"
+               data-bs-toggle="modal"
+               data-bs-target="#modal"
+               hx-get="{% url 'orderitem-create' order.pk %}"
+               hx-target=".modal-content"
+               hx-trigger="click"><i class="fa fa-plus" aria-hidden="true"></i> Add</a>
+        </div>
+        <table class="table table-hover table-dynamic table-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Note</th>
+                    <th scope="col" class="text-end">Quantity</th>
+                    <th scope="col" class="text-end">Price</th>
+                    <th scope="col" class="text-end">Total</th>
+                    <th scope="col" class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order.orderitem_set.all %}
+                    <tr>
+                        <td data-label="NAME">{{ item.product.name }}</td>
+                        <td data-label="NOTE">{{ item.product.note|default:'&nbsp;' }}</td>
+                        <td data-label="QUANTITY" class="text-end">{{ item.quantity }} {{ item.product.unit.name }}</td>
+                        <td data-label="PRICE" class="text-end">{{ item.product.unit_price|floatformat:"2" }}</td>
+                        <td data-label="TOTAL" class="text-end">{{ item.price|floatformat:"2" }}</td>
+                        <td data-label="ACTION" class="text-end">
+                            <div class="btn-group">
+                                <a class="btn btn-outline-primary btn-sm"
+                                   title="Edit product"
+                                   href="{% url 'orderitem-update' item.pk %}"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#modal"
+                                   hx-get="{% url 'orderitem-update' item.pk %}"
+                                   hx-target=".modal-content"
+                                   hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                                <a class="btn btn-outline-danger btn-sm"
+                                   title="Delete product"
+                                   href="{% url 'orderitem-delete' item.pk %}"
+                                   data-bs-toggle="modal"
+                                   data-bs-target="#modal"
+                                   hx-get="{% url 'orderitem-delete' item.pk %}"
+                                   hx-target=".modal-content"
+                                   hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td class="text-end" colspan="5">{{ order.total_price|floatformat:"2" }}</td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

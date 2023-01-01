@@ -8,6 +8,19 @@ table.table-dynamic thead {
     text-transform: uppercase;
 }
 
+
+.wrapper {
+    margin-top: 30vh;
+    margin-bottom: 30vh;
+}
+
+.form-signin {
+    max-width: 380px;
+    padding: 15px 35px 45px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
 @media screen and (max-width: 767px) {
     table.table-dynamic {
         border: 5;

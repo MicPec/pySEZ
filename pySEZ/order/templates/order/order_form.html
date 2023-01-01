@@ -8,7 +8,7 @@
                 <ul class="list-group list-group-flush p-5">
                     <a class="btn btn-primary btn-sm m-5 p-5"
                        title="Edit"
-                       href="{% url order-update order.pk %}"
+                       href="{% url 'order-update' order.pk %}"
                        data-bs-toggle="modal"
                        data-bs-target="#modal"
                        hx-get="{% url 'order-update' order.pk %}"

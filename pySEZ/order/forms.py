@@ -8,13 +8,6 @@ from .models import Order, OrderItem
 class OrderItemForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(OrderItemForm, self).__init__(*args, **kwargs)
-        self.fields["quantity"].widget.attrs.update(
-            {
-                # "min": self.instance.product.unit.minvalue,
-                # "max": self.instance.product.unit.maxvalue,
-                # "step": self.instance.product.unit.step,
-            }
-        )
 
     class Meta:
         model = OrderItem
@@ -25,7 +18,9 @@ class OrderItemForm(ModelForm):
         )
 
         widgets = {
-            "quantity": forms.NumberInput(attrs={"type": "number"}),
+            "quantity": forms.NumberInput(
+                attrs={"type": "number", "min": 0, "step": 0.01}
+            ),
             "note": forms.Textarea(attrs={"rows": 3}),
         }
 
@@ -52,6 +47,8 @@ class OrderForm(ModelForm):
 
 
 class OrderStatusUpdate(ModelForm):
+    comment = forms.CharField(max_length=50, required=False)
+
     class Meta:
         model = Order
-        fields = ("status",)
+        fields = ("status", "comment")

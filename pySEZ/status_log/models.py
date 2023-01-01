@@ -6,10 +6,13 @@ from pySEZ.utils import get_sentinel_user
 
 
 class StatusLog(models.Model):
-    user = models.ForeignKey(User,
-                            #  default=User,
-                             on_delete=models.SET(get_sentinel_user))
-    order = models.ForeignKey(Order, on_delete=models.PROTECT)
-    status = models.ForeignKey(Status, on_delete=models.PROTECT)
+    # log changes to order and status
+    user = models.ForeignKey(
+        User,
+        #  default=User,
+        on_delete=models.SET(get_sentinel_user),
+    )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
     date_changed = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=255, blank=True)

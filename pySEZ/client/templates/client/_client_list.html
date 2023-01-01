@@ -2,41 +2,49 @@
     <table class="table table-hover table-dynamic">
         <thead class="table-dark">
             <tr>
-                <th scope="col">Nazwa</th>
-                <th scope="col">Firma</th>
+                <th scope="col">Name</th>
+                <th scope="col">Company</th>
                 <th scope="col">e-mail</th>
-                <th scope="col">Telefon</th>
-                <th scope="col">WWW</th>
-                <th scope="col" class="text-end">Akcje</th>
+                <th scope="col">phone</th>
+                <th scope="col">website</th>
+                <th scope="col">Orders count</th>
+                <th scope="col" class="text-end">Actions</th>
             </tr>
         </thead>
         <tbody>
             {% for client in client_list %}
                 <tr>
-                    <td data-label="Nazwa">
-                        <a href="{% url 'client-detail' client.pk %}">{{ client.fullname }}</a>
-                    </td>
-                    <td data-label="Firma">{{ client.company|default:'&nbsp;' }}</td>
-                    <td data-label="E-mail">
+                    <td data-label="NAME">{{ client.fullname }}</td>
+                    <td data-label="COMPANY">{{ client.company|default:'&nbsp;' }}</td>
+                    <td data-label="E-MAIL">
                         <a href="mailto:{{ client.email }}">{{ client.email }}</a>
                     </td>
-                    <td data-label="Telefon">{{ client.phone }}</td>
-                    <td data-label="WWW"><a href="{{ client.website }}" target="_blank">{{ client.website|default:'&nbsp;' }}</a></td>
-                    <td data-label="Akcje" class="text-end">
-                        {% comment %} <a class="btn btn-primary btn-sm" href="{% url 'client_update' client.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a> {% endcomment %}
-                        <a class="btn btn-primary btn-sm"
-                           href="{% url 'client-update' client.pk %}"
-                           data-bs-toggle="modal"
-                           data-bs-target="#modal"
-                           hx-get="{% url 'client-update' client.pk %}"
-                           hx-target=".modal-content"
-                           hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i>Edytuj</a>
-                        <a class="confirm btn btn-danger btn-sm"
-                           data-bs-toggle="modal"
-                           data-bs-target="#modal"
-                           hx-get="{% url 'client-delete' client.pk %}"
-                           hx-target=".modal-content"
-                           hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i>Usuń</a>
+                    <td data-label="PHONE">{{ client.phone }}</td>
+                    <td data-label="WEBSITE">
+                        <a href="{{ client.website }}" target="_blank">{{ client.website|urlize|default:'&nbsp;' }}</a>
+                    </td>
+                    <td data-label="ORDERS COUNT" class="text-center">{{ client.orders.count }}</td>
+                    <td data-label="ACTIONS" class="text-end">
+                        <div class="btn-group">
+                            <a class="btn btn-outline-primary btn-sm"
+                               tooltip="View"
+                               href="{% url 'client-detail' client.pk %}"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                            <a class="btn btn-outline-primary btn-sm"
+                               tooltip="Edit"
+                               href="{% url 'client-update' client.pk %}"
+                               data-bs-toggle="modal"
+                               data-bs-target="#modal"
+                               hx-get="{% url 'client-update' client.pk %}"
+                               hx-target=".modal-content"
+                               hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            <a class="confirm btn btn-outline-danger btn-sm"
+                               tooltip="Delete"
+                               data-bs-toggle="modal"
+                               data-bs-target="#modal"
+                               hx-get="{% url 'client-delete' client.pk %}"
+                               hx-target=".modal-content"
+                               hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

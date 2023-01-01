@@ -3,6 +3,9 @@ from django.shortcuts import redirect
 
 
 class Client(models.Model):
+    class Meta:
+        ordering = ["lastname", "company", "firstname"]
+
     firstname = models.CharField(max_length=50, blank=True)
     lastname = models.CharField(max_length=50)
     email = models.EmailField(max_length=150, unique=True)

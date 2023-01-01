@@ -1,119 +1,88 @@
 {% extends "../index.html" %}
-{% load ordertags %}
 {% block content %}
     <div class="row">
-        <div class="col-md-6 gy-3">
-            {% with client=order.client %}
-                {% include 'client/_client_vcard.html' %}
-            {% endwith %}
-        </div>
-        <div class="col-md-6 gy-3">
+        <div class="col-md-6 my-3">
             <div class="card shadow">
                 <div class="card-header bg-primary text-light fw-bold fs-5">Actions</div>
-                <ul class="list-group list-group-flush p-5">
-                    <a class="btn btn-primary btn-sm m-5 p-5"
+                <div class="d-grid p-3">
+                    <a class="btn btn-outline-primary m-3 p-5"
                        title="Edit"
                        href="{% url 'order-update' order.pk %}"
-                       {% comment %}
                        data-bs-toggle="modal"
                        data-bs-target="#modal"
                        hx-get="{% url 'order-update' order.pk %}"
                        hx-target=".modal-content"
-                       hx-trigger="click"
-                       {% endcomment %}><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
-                    <a class="confirm btn btn-danger btn-sm m-5 p-5"
+                       hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a>
+                    <a class="confirm btn btn-outline-danger m-3 p-5"
                        title="Delete"
                        data-bs-toggle="modal"
                        data-bs-target="#modal"
                        hx-get="{% url 'order-delete' order.pk %}"
                        hx-target=".modal-content"
                        hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i> delete</a>
-                </ul>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6 gy-3">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-light fw-bold fs-5">Order</div>
-                <ul class="list-group list-group-flush text-end">
-                    <li class="list-group-item">
-                        <i class="pull-left fw-bold">ID:</i>#{{ order.id }}
-                    </li>
-                    <li class="list-group-item">
-                        <i class="pull-left fw-bold">USER:</i>{{ order.user.name }}
-                    </li>
-                    <li class="list-group-item">
-                        <i class="pull-left fw-bold">DATE:</i>
-                        <br>
-                        <ul class="list-group-flush">
+            <div class="my-3">
+                {% with client=order.client %}
+                    {% include 'client/_client_vcard.html' %}
+                {% endwith %}
+            </div>
+            <div class="my-3">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-light fw-bold fs-5">Order</div>
+                    <ul class="list-group list-group-flush text-end">
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">ID:</i>#{{ order.id }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">USER:</i>{{ order.user.name }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">DATE:</i>
+                            <br/>
+                            <ul class="list-group-flush">
+                                <li class="list-group-item">
+                                    <i class="pull-left fw-bold">CREATED: </i>{{ order.date_created }}
+                                </li>
+                                {% if order.deadline %}
+                                    <li class="list-group-item">
+                                        <i class="pull-left fw-bold">DEADLINE: </i>{{ order.deadline }}
+                                    </li>
+                                {% endif %}
+                                {% if order.finished %}
+                                    <li class="list-group-item">
+                                        <i class="pull-left fw-bold">FINISHED: </i>{{ order.finished }}
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">PRICE:</i>{{ order.total_price|floatformat:"2" }}
+                        </li>
+                        {% if order.discount %}
                             <li class="list-group-item">
-                                <i class="pull-left fw-bold">CREATED: </i>{{ order.date_created }}
+                                <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.discount }}%
                             </li>
-                            {% if order.deadline %}
-                                <li class="list-group-item">
-                                    <i class="pull-left fw-bold">DEADLINE: </i>{{ order.deadline }}
-                                </li>
-                            {% endif %}
-                            {% if order.finished %}
-                                <li class="list-group-item">
-                                    <i class="pull-left fw-bold">FINISHED: </i>{{ order.finished }}
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </li>
-                    <li class="list-group-item">
-                        <i class="pull-left fw-bold">PRICE:</i>{{ order.total_price|floatformat:"2" }}
-                    </li>
-                    {% if order.discount %}
+                            <li class="list-group-item">
+                                <i class="pull-left fw-bold">FINAL PRICE:</i>{{ order.discounted_price|floatformat:"2" }}
+                            </li>
+                        {% endif %}
                         <li class="list-group-item">
-                            <i class="pull-left fw-bold">DISCOUNT:</i>{{ order.discount }}%
+                            <i class="pull-left fw-bold">MARKERS:</i>{{ order.markers }}
                         </li>
                         <li class="list-group-item">
-                            <i class="pull-left fw-bold">FINAL PRICE:</i>{{ order.discounted_price|floatformat:"2" }}
+                            <i class="pull-left fw-bold">NOTE:</i><textarea disabled class="form-control" rows="3">{{ order.note }}</textarea>
                         </li>
-                    {% endif %}
-                    <li class="list-group-item">
-                        <i class="pull-left fw-bold">MARKERS:</i>{{ order.markers }}
-                    </li>
-                    <li class="list-group-item">
-                        <i class="pull-left fw-bold">NOTE:</i><textarea disabled class="form-control" style="height: 15vh;">{{ order.note}}</textarea>
-                    </li>
-                    <li class="list-group-item">
-                        <i class="pull-left fw-bold">STATUS:</i>
-                        {% include "./_status_btn.html" %}
-                    </li>
-                </ul>
+                        <li class="list-group-item">
+                            <i class="pull-left fw-bold">STATUS:</i>
+                            {% include "./_status_btn.html" %}
+                        </li>
+                    </ul>
+                </div>
+                {% include "order/_statuslog.html" %}
             </div>
         </div>
-        <div class="col-md-6 gy-3">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-light fw-bold fs-5">Products</div>
-                <table class="table table-hover table-dynamic table-sm">
-                    <thead class="table-dark">
-                        <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Note</th>
-                            <th scope="col" class="text-end">Quantity</th>
-                            <th scope="col" class="text-end">Price</th>
-                            <th scope="col" class="text-end">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for product in order.products.all %}
-                            <tr>
-                                <td data-label="NAME">{{ product.name }}</td>
-                                <td data-label="NOTE">{{ product.note|default:'&nbsp;' }}</td>
-                                <td data-label="QUANTITY"  class="text-end">{% product_qty order product %} {{ product.unit.name }}</td>
-                                <td data-label="PRICE" class="text-end">{{ product.unit_price|floatformat:"2" }}</td>
-                                <td data-label="TOTAL" class="text-end">{% product_amount_price order product %}</td>
-                            </tr>
-                        {% endfor %}
-                        <tr>
-                            <td class="text-end" colspan=5>{{ order.total_price|floatformat:"2" }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        {% include "order/_orderitems.html" %}
     </div>
     {% for order in order.orders.all|dictsortreversed:'date_created' %}
         <p>{{ order }} total:{{ order.total_price }}</p>

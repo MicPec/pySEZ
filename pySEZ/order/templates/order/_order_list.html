@@ -20,60 +20,60 @@
                     <td data-label="ID"
                         style="{{ order.status.css_bg_color }}{{ order.status.css_text_color }}">#{{ order.id }}</td>
                     <td data-label="Client">
-                        <a href="{% url 'client-detail' order.client.pk %}">{{ order.client|default:'&nbsp;' }}</a>
+                        <a href="{% url 'client-detail' order.client.pk %}">{{ order.client.fullname|default:'&nbsp;' }}
+                            <br/>
+                            {% if client.company != '' %}({{ order.client.company }}){% endif %}
+                        </a>
                     </td>
                     <td data-label="Date">
                         <ul>
-                            <li class="list-group-item">Created : {{ order.date_created }}</li>
-                            {% if order.deadline %}<li class="list-group-item">Deadline : {{ order.deadline }}</li>{% endif %}
-                            {% if order.date_finished %}<li class="list-group-item">Finished : {{ order.date_finished }}</li>{% endif %}
+                            <li class="list-group-item">Created : {{ order.date_created|date:"SHORT_DATE_FORMAT" }}</li>
+                            {% if order.deadline %}
+                                <li class="list-group-item">Deadline : {{ order.deadline|date:"SHORT_DATE_FORMAT" }}</li>
+                            {% endif %}
+                            {% if order.date_finished %}
+                                <li class="list-group-item">Finished : {{ order.date_finished|date:"SHORT_DATE_FORMAT" }}</li>
+                            {% endif %}
                         </ul>
                     </td>
                     <td data-label="Price" class="text-end">
                         <ul>
-                            {% if order.discount  %}
+                            {% if order.discount %}
                                 <li class="list-group-item">Price: {{ order.total_price|floatformat:"2" }}</li>
                                 <li class="list-group-item">Discount: {{ order.discount }}%</li>
                             {% endif %}
                             <li class="list-group-item">Final: {{ order.discounted_price|floatformat:"2" }}</li>
                         </ul>
                     </td>
-                    <td data-label="Note">{{ order.note|default:"&nbsp;" }}</td>
+                    <td data-label="Note">{{ order.note|truncatechars:40 |default:"&nbsp;" }}</td>
                     <td data-label="Products">
                         {% for product in order.products.all  %}
                             <ul>
-                                <li class="list-group-item">{{ product.name }} - {% product_qty order product  %}{{ product.unit.name }}</li>
+                                <li class="list-group-item">{{ product.name }} ({% product_qty order product  %}{{ product.unit.name }})</li>
                             </ul>
                         {% endfor %}
                     </td>
                     <td data-label="Flags">{{ order.flags|default:"&nbsp;" }}</td>
                     <td data-label="Status">{% include "./_status_btn.html" %}</td>
                     <td data-label="Actions" class="text-end">
-                        <a class="btn btn-info btn-sm"
-                           title="Look"
-                           href="{% url 'order-detail' order.pk %}">
-                            <i class="fa fa-eye" aria-hidden="true"></i> </a>
-                        <a class="btn btn-primary btn-sm"
-                           title="Edit"
-                           href="{% url 'order-update' order.pk %}"
-                           {% comment %}
-                           data-bs-toggle="modal"
-                           data-bs-target="#modal"
-                           hx-get="{% url 'order-update' order.pk %}"
-                           hx-target=".modal-content"
-                           hx-trigger="click"
-                           {% endcomment %}><i class="fa fa-pencil" aria-hidden="true"></i> </a>
-                        <a class="confirm btn btn-danger btn-sm"
-                           title="Delete"
-                           data-bs-toggle="modal"
-                           data-bs-target="#modal"
-                           hx-get="{% url 'order-delete' order.pk %}"
-                           hx-target=".modal-content"
-                           hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i> </a>
+                        <div class="btn-group">
+                            <a class="btn btn-outline-info btn-sm"
+                               title="Look"
+                               href="{% url 'order-detail' order.pk %}">
+                                <i class="fa fa-eye" aria-hidden="true"></i> </a>
+                            {% comment %} <a class="btn btn-primary btn-sm" title="Edit" href="{% url 'order-detail' order.pk %}"><i class="fa fa-pencil" aria-hidden="true"></i> </a> {% endcomment %}
+                            <a class="confirm btn btn-outline-danger btn-sm"
+                               title="Delete"
+                               data-bs-toggle="modal"
+                               data-bs-target="#modal"
+                               hx-get="{% url 'order-delete' order.pk %}"
+                               hx-target=".modal-content"
+                               hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"></i> </a>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
-    <div class="d-flex flex-row-reverse p-0">{% include 'scraps/pagination.html' %}</div>
+    <div class="d-flex flex-row-reverse p-0">{% include "scraps/pagination.html" %}</div>
 </div>
