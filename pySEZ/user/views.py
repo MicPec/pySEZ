@@ -14,6 +14,7 @@ class LoginView(FormView):
         password = form.cleaned_data["password"]
         user = authenticate(self.request, username=username, password=password)
         if user is None:
+            form.add_error(None, "Wrong username or password")
             return self.form_invalid(form)
         login(self.request, user)
         return redirect("order-list")

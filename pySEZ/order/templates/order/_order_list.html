@@ -39,17 +39,19 @@
                     <td data-label="Price" class="text-end">
                         <ul>
                             {% if order.discount %}
-                                <li class="list-group-item">Price: {{ order.total_price|floatformat:"2" }}</li>
+                                <li class="list-group-item">Price: {{ order.total_price|floatformat:"2" }}{{ currency_symbol }}</li>
                                 <li class="list-group-item">Discount: {{ order.discount }}%</li>
                             {% endif %}
-                            <li class="list-group-item">Final: {{ order.discounted_price|floatformat:"2" }}</li>
+                            <li class="list-group-item">Final: {{ order.discounted_price|floatformat:"2" }}{{ currency_symbol }}</li>
                         </ul>
                     </td>
-                    <td data-label="Note">{{ order.note|truncatechars:40 |default:"&nbsp;" }}</td>
+                    <td >{{ order.note|truncatechars:40 |default:"&nbsp;" }}</td>
                     <td data-label="Products">
                         {% for product in order.products.all  %}
                             <ul>
-                                <li class="list-group-item">{{ product.name }} ({% product_qty order product  %}{{ product.unit.name }})</li>
+                                <li class="list-group-item">
+                                    {{ product.name }}{% comment %} ({% product_qty order product  %}{{ product.unit.name }}){% endcomment %}
+                                </li>
                             </ul>
                         {% endfor %}
                     </td>

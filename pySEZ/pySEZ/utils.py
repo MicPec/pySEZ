@@ -1,7 +1,6 @@
 from client.models import Client
 from django.contrib.auth import get_user_model
-from django.db import models
-
+from django.conf import settings
 
 # rgb = tuple(R, G, B)
 def rgb_to_hex(rgb):
@@ -37,3 +36,7 @@ def get_sentinel_user():
 
 def get_sentinel_client():
     return Client.objects.get_or_create(firstname="deleted")[0]
+
+
+def currency(request):
+    return {"currency": settings.CURRENCY, "currency_symbol": settings.CURRENCY_SYMBOL}

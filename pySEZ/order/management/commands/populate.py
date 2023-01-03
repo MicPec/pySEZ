@@ -217,7 +217,7 @@ class OrderFactory(factory.django.DjangoModelFactory):
     status = factory.lazy_attribute(
         lambda x: Status.objects.filter(state="NEW").first()
     )
-    products = factory.RelatedFactory(OrderItemFactory, "order")
+    products = factory.RelatedFactoryList(OrderItemFactory, "order", size=3)
 
 
 class Command(BaseCommand):
