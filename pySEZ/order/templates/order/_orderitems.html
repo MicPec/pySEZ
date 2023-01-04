@@ -27,7 +27,12 @@
                 {% for item in order.orderitem_set.all %}
                     <tr>
                         <td data-label="NAME">{{ item.product.name }}</td>
-                        <td data-label="NOTE">{{ item.product.note|default:'&nbsp;' }}</td>
+                        <td data-label="NOTE">
+                            {% if item.note %}
+                                {{ item.note|truncatechars:20|default:'&nbsp;' }}
+                                <a href="#"><i class="fa fa-file"></i></a>
+                            {% endif %}
+                        </td>
                         <td data-label="QUANTITY" class="text-end">{{ item.quantity }} {{ item.product.unit.name }}</td>
                         <td data-label="PRICE" class="text-end">{{ item.product.unit_price|floatformat:"2" }}</td>
                         <td data-label="TOTAL" class="text-end">{{ item.price|floatformat:"2" }}</td>

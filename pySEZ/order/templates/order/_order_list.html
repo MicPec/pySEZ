@@ -45,7 +45,7 @@
                             <li class="list-group-item">Final: {{ order.discounted_price|floatformat:"2" }}{{ currency_symbol }}</li>
                         </ul>
                     </td>
-                    <td >{{ order.note|truncatechars:40 |default:"&nbsp;" }}</td>
+                    <td >{{ order.note|truncatechars:40|default:"&nbsp;" }}</td>
                     <td data-label="Products">
                         {% for product in order.products.all  %}
                             <ul>

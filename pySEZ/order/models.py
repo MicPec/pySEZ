@@ -1,10 +1,9 @@
-from django.shortcuts import redirect
 from client.models import Client
 from django.contrib import admin
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.db.models import Prefetch, Sum
+from django.db.models import Prefetch
 from marker.models import Marker
 from product.models import Product
 from status.models import Status
@@ -53,11 +52,9 @@ class Order(models.Model):
 
     @property
     def total_price(self) -> float:
-        return sum(oi.price for oi in self.orderitem_set.all())
-        # products = self.orderitem_set.all().prefetch_related(Prefetch("product"))
-        # return (
-        #     products.aggregate(Sum("product__price"))["product__unit_price__sum"] or 0
-        # )
+        # return sum(oi.price for oi in self.orderitem_set.all())
+        items = self.orderitem_set.all().prefetch_related(Prefetch("product"))
+        return sum(item.product.unit_price * item.quantity for item in items)
 
     @admin.display
     def get_products(self):

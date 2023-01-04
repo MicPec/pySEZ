@@ -7,10 +7,7 @@
             data-bs-dismiss="modal"
             aria-label="Close"></button>
 </div>
-<form method="POST"
-      id="confirm"
-      role="dialog"
-      action="{{ action }}"
+<form method="POST" id="confirm" role="dialog" action="{{ action }}">
     {% csrf_token %}
     <div class="modal-body">
         {% csrf_token %}

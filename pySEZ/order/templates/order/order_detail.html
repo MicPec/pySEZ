@@ -1,6 +1,53 @@
 {% extends "../index.html" %}
 {% block content %}
     <div class="row">
+        <div class="col-md-4">
+            <div class="card bg-success mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-calendar-check-o fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ order.date_created|date:"SHORT_DATE_FORMAT" }}</p>
+                    </div>
+                    </row>
+                </div>
+                <div class="card-footer text-light fs-5">Date created</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-shopping-basket fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ order.products.count }}</p>
+                    </div>
+                    </row>
+                </div>
+                <div class="card-footer text-light fs-5">Products count</div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-money fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ currency_symbol }}{{ order.discounted_price|floatformat:"2" }}</p>
+                    </div>
+                    </row>
+                </div>
+                <div class="card-footer text-light fs-5">Final price</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-md-6 my-3">
             <div class="card shadow">
                 <div class="card-header bg-primary text-light fw-bold fs-5">Actions</div>
@@ -35,23 +82,23 @@
                             <i class="pull-left fw-bold">ID:</i>#{{ order.id }}
                         </li>
                         <li class="list-group-item">
-                            <i class="pull-left fw-bold">USER:</i>{{ order.user.name }}
+                            <i class="pull-left fw-bold">USER:</i>{{ order.user }}
                         </li>
                         <li class="list-group-item">
                             <i class="pull-left fw-bold">DATE:</i>
                             <br/>
                             <ul class="list-group-flush">
                                 <li class="list-group-item">
-                                    <i class="pull-left fw-bold">CREATED: </i>{{ order.date_created }}
+                                    <i class="pull-left fw-bold">CREATED: </i>{{ order.date_created|date:"SHORT_DATETIME_FORMAT" }}
                                 </li>
                                 {% if order.deadline %}
                                     <li class="list-group-item">
-                                        <i class="pull-left fw-bold">DEADLINE: </i>{{ order.deadline }}
+                                        <i class="pull-left fw-bold">DEADLINE: </i>{{ order.deadline|date:"SHORT_DATE_FORMAT" }}
                                     </li>
                                 {% endif %}
                                 {% if order.finished %}
                                     <li class="list-group-item">
-                                        <i class="pull-left fw-bold">FINISHED: </i>{{ order.finished }}
+                                        <i class="pull-left fw-bold">FINISHED: </i>{{ order.finished|date:"SHORT_DATETIME_FORMAT" }}
                                     </li>
                                 {% endif %}
                             </ul>
@@ -84,7 +131,4 @@
         </div>
         {% include "order/_orderitems.html" %}
     </div>
-    {% for order in order.orders.all|dictsortreversed:'date_created' %}
-        <p>{{ order }} total:{{ order.total_price }}</p>
-    {% endfor %}
 {% endblock content %}

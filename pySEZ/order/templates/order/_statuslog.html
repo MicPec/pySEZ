@@ -15,7 +15,7 @@
                     {% for log in statuslog %}
                         <tr>
                             <td data-label="USER">{{ log.user }}</td>
-                            <td data-label="DATE">{{ log.date_changed }}</td>
+                            <td data-label="DATE">{{ log.date_changed|date:"SHORT_DATETIME_FORMAT" }}</td>
                             <td data-label="STATUS">{{ log.status }}</td>
                             <td data-label="COMMENT">{{ log.comment }}</td>
                         </tr>
