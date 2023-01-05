@@ -24,3 +24,15 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.unit_price}/{self.unit.name})"
+
+    @property
+    def orders_new(self):
+        return self.orders.filter(status__state="NEW")
+
+    @property
+    def orders_pending(self):
+        return self.orders.filter(status__state="PENDING")
+
+    @property
+    def orders_done(self):
+        return self.orders.filter(status__state="DONE")

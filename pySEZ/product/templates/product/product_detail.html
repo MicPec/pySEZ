@@ -1,9 +1,118 @@
 {% extends "../index.html" %}
+{% load static %}
 {% block content %}
-
-            <p><strong>{{ product.name }}</strong></p>
-                <p>{{ product.unit }}</p>
-                    <p>{{ product.unit_price }}</p>
-
-
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card bg-secondary mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-inbox fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ object.orders.count|default:'--' }}</p>
+                    </div>
+                    </row>
+                </div>
+                <a href="#">
+                    <div class="card-footer text-light fs-5">Total orders count</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-pencil-square-o fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ object.orders_new.count|default:"--" }}</p>
+                    </div>
+                    </row>
+                </div>
+                <a href="#">
+                    <div class="card-footer text-light fs-5">New orders count</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-hourglass-half fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ object.orders_pending.count|default:"--" }}</p>
+                    </div>
+                    </row>
+                </div>
+                <a href="#">
+                    <div class="card-footer text-light fs-5">Pending orders count</div>
+                </a>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success mb-3 text-light">
+                <div class="card-body p-0">
+                    <row class="d-flex flex-row align-items-center justify-content-between">
+                    <div class="ps-3">
+                        <i class="fa fa-check-square-o fa-3x"></i>
+                    </div>
+                    <div class="pe-4">
+                        <p class="fs-1 fw-bold m-0 text-end">{{ object.orders_done.count|default:"--" }}</p>
+                    </div>
+                    </row>
+                </div>
+                <a href="#">
+                    <div class="card-footer text-light fs-5">Finished orders count</div>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 gy-3">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-light fw-bold fs-5">Actions</div>
+                <div class="d-grid p-3">
+                    <a href="3"
+                       class="btn btn-outline-primary m-3 p-5"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modal"
+                       hx-get="#"
+                       hx-target=".modal-content"
+                       hx-trigger="click"><i class="fa fa-pencil" aria-hidden="true"> Edit</i></a>
+                    <a class="confirm btn btn-outline-danger m-3 p-5"
+                       data-bs-toggle="modal"
+                       data-bs-target="#modal"
+                       hx-get="#"
+                       hx-target=".modal-content"
+                       hx-trigger="click"><i class="fa fa-trash" aria-hidden="true"> Delete</i></a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 gy-3">INCLUDE</div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-md-12 mt-3">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-light fw-bold">
+                    <div class="d-flex align-items-center">
+                        <div class="p-2 flex-grow-1 fs-5">Order List</div>
+                        <div class="p-2">
+                            <span class="htmx-indicator me-2">
+                                <img width="30px" src="{% static "assets/images/three-dots.svg" %}"/>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="partial">
+                    {% with order_list=orders_filtered %}
+                        {% include '../order/_order_list.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}

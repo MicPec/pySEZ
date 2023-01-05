@@ -34,6 +34,19 @@ class ProductListView(LoginRequiredMixin, ListView):
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        match self.request.GET.get("orders_state"):
+            case "NEW":
+                context["orders_filtered"] = self.object.orders_new
+            case "PENDING":
+                context["orders_filtered"] = self.object.orders_pending
+            case "DONE":
+                context["orders_filtered"] = self.object.orders_done
+            case _:
+                context["orders_filtered"] = self.object.orders.all()
+        return context
+
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
